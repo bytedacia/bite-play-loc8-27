@@ -36,7 +36,7 @@ const VideoBackground = () => {
               margin: 0,
               padding: 0
             }}
-            src="https://www.youtube.com/embed/GWaQiFeQ87g?autoplay=1&loop=1&playlist=GWaQiFeQ87g&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1&vq=hd1080&playsinline=1&start=0"
+            src="https://www.youtube.com/embed/GWaQiFeQ87g?autoplay=1&mute=1&loop=1&playlist=GWaQiFeQ87g&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1&vq=hd1080&playsinline=1&start=0"
             title="Background Video"
             frameBorder="0"
             allow="autoplay; encrypted-media; fullscreen"
