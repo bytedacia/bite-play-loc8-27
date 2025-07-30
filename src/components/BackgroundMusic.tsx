@@ -10,21 +10,18 @@ const BackgroundMusic = () => {
     const attemptAutoplay = () => {
       if (iframeRef.current && !hasStarted) {
         setHasStarted(true);
-        // Aggiungi mute=0 per assicurarsi che l'audio non sia silenziato
         const baseUrl = "https://www.youtube.com/embed/LgMvaRwbEOE?autoplay=1&mute=0&loop=1&playlist=LgMvaRwbEOE&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1";
         iframeRef.current.src = baseUrl;
-        console.log("Audio YouTube started");
+        console.log("Background music started");
       }
     };
 
-    // Prova autoplay dopo un piccolo delay
     const timer = setTimeout(attemptAutoplay, 500);
 
-    // Autoplay su prima interazione utente
     const handleInteraction = () => {
       if (!hasStarted) {
         attemptAutoplay();
-        console.log("Audio started after user interaction");
+        console.log("Background music started after user interaction");
       }
       document.removeEventListener('click', handleInteraction);
       document.removeEventListener('touchstart', handleInteraction);
