@@ -49,19 +49,21 @@ const BackgroundMusic = () => {
   return (
     <iframe
       ref={iframeRef}
-      className="opacity-0 pointer-events-none"
+      className="invisible absolute"
       src="https://www.youtube.com/embed/LgMvaRwbEOE?autoplay=1&loop=1&playlist=LgMvaRwbEOE&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1&mute=0&start=0"
       title="Background Music"
       frameBorder="0"
-      allow="autoplay; encrypted-media; fullscreen"
-      allowFullScreen
+      allow="autoplay; encrypted-media"
       style={{ 
         position: 'fixed', 
-        top: '-1000px', 
-        left: '-1000px', 
-        width: '1px', 
-        height: '1px',
-        zIndex: -9999
+        top: '-9999px', 
+        left: '-9999px', 
+        width: '0px', 
+        height: '0px',
+        zIndex: -9999,
+        opacity: 0,
+        visibility: 'hidden',
+        display: 'none'
       }}
     />
   );
