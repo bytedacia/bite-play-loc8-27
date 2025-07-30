@@ -4,48 +4,65 @@ const BackgroundMusic = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
-    // Function to start music on user interaction
-    const startMusic = () => {
+    // Multiple attempts to start autoplay
+    const attemptAutoplay = () => {
       if (iframeRef.current) {
-        const src = iframeRef.current.src;
-        iframeRef.current.src = src + "&autoplay=1";
+        // Force reload iframe multiple times
+        const baseUrl = "https://www.youtube.com/embed/LgMvaRwbEOE?autoplay=1&loop=1&playlist=LgMvaRwbEOE&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1&mute=0&start=0";
+        iframeRef.current.src = baseUrl + "&t=" + Date.now();
       }
-      // Remove listeners after first interaction
-      document.removeEventListener('click', startMusic);
-      document.removeEventListener('touchstart', startMusic);
-      document.removeEventListener('keydown', startMusic);
     };
 
-    // Add multiple interaction listeners
-    document.addEventListener('click', startMusic);
-    document.addEventListener('touchstart', startMusic);
-    document.addEventListener('keydown', startMusic);
+    // Immediate attempt
+    attemptAutoplay();
 
-    // Try immediate autoplay as fallback
-    const timer = setTimeout(() => {
-      if (iframeRef.current) {
-        const src = iframeRef.current.src;
-        iframeRef.current.src = src;
-      }
-    }, 1000);
+    // Multiple retries with different delays
+    const timers = [
+      setTimeout(attemptAutoplay, 500),
+      setTimeout(attemptAutoplay, 1000),
+      setTimeout(attemptAutoplay, 2000),
+      setTimeout(attemptAutoplay, 3000)
+    ];
+
+    // Also try on any user interaction
+    const forcePlay = () => {
+      attemptAutoplay();
+    };
+
+    // Add listeners for all possible interactions
+    window.addEventListener('click', forcePlay, { once: true });
+    window.addEventListener('touchstart', forcePlay, { once: true });
+    window.addEventListener('scroll', forcePlay, { once: true });
+    window.addEventListener('mousemove', forcePlay, { once: true });
+    window.addEventListener('keydown', forcePlay, { once: true });
 
     return () => {
-      clearTimeout(timer);
-      document.removeEventListener('click', startMusic);
-      document.removeEventListener('touchstart', startMusic);
-      document.removeEventListener('keydown', startMusic);
+      timers.forEach(timer => clearTimeout(timer));
+      window.removeEventListener('click', forcePlay);
+      window.removeEventListener('touchstart', forcePlay);
+      window.removeEventListener('scroll', forcePlay);
+      window.removeEventListener('mousemove', forcePlay);
+      window.removeEventListener('keydown', forcePlay);
     };
   }, []);
 
   return (
     <iframe
       ref={iframeRef}
-      className="hidden"
-      src="https://www.youtube.com/embed/LgMvaRwbEOE?autoplay=1&loop=1&playlist=LgMvaRwbEOE&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1&mute=0"
+      className="opacity-0 pointer-events-none"
+      src="https://www.youtube.com/embed/LgMvaRwbEOE?autoplay=1&loop=1&playlist=LgMvaRwbEOE&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1&mute=0&start=0"
       title="Background Music"
       frameBorder="0"
-      allow="autoplay; encrypted-media"
-      style={{ position: 'absolute', left: '-9999px', top: '-9999px', width: '1px', height: '1px' }}
+      allow="autoplay; encrypted-media; fullscreen"
+      allowFullScreen
+      style={{ 
+        position: 'fixed', 
+        top: '-1000px', 
+        left: '-1000px', 
+        width: '1px', 
+        height: '1px',
+        zIndex: -9999
+      }}
     />
   );
 };
