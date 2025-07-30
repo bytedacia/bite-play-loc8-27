@@ -1,22 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 
 const BackgroundMusic = () => {
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
     if (hasStarted) return; // Evita audio duplicato
 
     const attemptAutoplay = () => {
-      if (audioRef.current && !hasStarted) {
-        console.log("Tentativo di avvio audio...");
+      if (iframeRef.current && !hasStarted) {
         setHasStarted(true);
-        audioRef.current.volume = 0.8; // Volume all'80%
-        audioRef.current.play().then(() => {
-          console.log("Audio avviato con successo!");
-        }).catch(err => {
-          console.log("Autoplay fallito, aspetto interazione utente:", err);
-        });
+        const baseUrl = "https://www.youtube.com/embed/LgMvaRwbEOE?autoplay=1&loop=1&playlist=LgMvaRwbEOE&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1&mute=0";
+        iframeRef.current.src = baseUrl;
       }
     };
 
@@ -43,14 +38,21 @@ const BackgroundMusic = () => {
   }, [hasStarted]);
 
   return (
-    <audio
-      ref={audioRef}
-      loop
-      preload="auto"
-      style={{ display: 'none' }}
-    >
-      <source src="/audio/background-music.mp3" type="audio/mpeg" />
-    </audio>
+    <iframe
+      ref={iframeRef}
+      style={{ 
+        position: 'absolute', 
+        top: '-9999px', 
+        left: '-9999px', 
+        width: '1px', 
+        height: '1px',
+        border: 'none',
+        opacity: 0,
+        visibility: 'hidden'
+      }}
+      title="Background Music"
+      allow="autoplay; encrypted-media"
+    />
   );
 };
 
