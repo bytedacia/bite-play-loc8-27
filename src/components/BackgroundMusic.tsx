@@ -9,9 +9,12 @@ const BackgroundMusic = () => {
 
     const attemptAutoplay = () => {
       if (audioRef.current && !hasStarted) {
+        console.log("Tentativo di avvio audio...");
         setHasStarted(true);
-        audioRef.current.volume = 0.5; // Volume al 50%
-        audioRef.current.play().catch(err => {
+        audioRef.current.volume = 0.8; // Volume all'80%
+        audioRef.current.play().then(() => {
+          console.log("Audio avviato con successo!");
+        }).catch(err => {
           console.log("Autoplay fallito, aspetto interazione utente:", err);
         });
       }
