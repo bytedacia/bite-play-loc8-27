@@ -104,27 +104,11 @@ const Progetto = () => {
               </div>
               <div className="mt-6 text-center">
                 <p className="text-foreground/80">
-                  Sviluppato con React, TypeScript e tecnologie moderne per garantire performance ottimali e scalabilità.
+                  Sviluppato con React, JavaScript, TypeScript e tecnologie moderne per garantire performance ottimali e scalabilità.
                 </p>
               </div>
             </div>
             
-            <div className="bg-gradient-to-r from-brand-primary/10 to-brand-secondary/10 p-8 rounded-lg border border-brand-primary/30">
-              <h2 className="text-2xl font-semibold mb-4 text-brand-primary flex items-center">
-                <Zap className="mr-3 h-6 w-6" />
-                Food Guess Mode Beta
-              </h2>
-              <p className="text-lg mb-4">
-                La modalità attualmente in sviluppo che permetterà ai giocatori di:
-              </p>
-              <ul className="list-disc list-inside space-y-2 text-foreground/80">
-                <li>Indovinare piatti da immagini e descrizioni</li>
-                <li>Scoprire l'origine geografica dei cibi</li>
-                <li>Competere con amici in sfide culinarie</li>
-                <li>Guadagnare punti e sbloccare achievement</li>
-                <li>Condividere le proprie scoperte gastronomiche</li>
-              </ul>
-            </div>
           </div>
         </div>
       </div>
