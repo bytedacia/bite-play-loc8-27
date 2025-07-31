@@ -5,11 +5,15 @@ import { ArrowLeft, Timer, Target, RotateCcw, Trophy } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import FoodGuessGame from "@/components/game/FoodGuessGame";
 
 const Game = () => {
   const isMobile = useIsMobile();
   const [currentRound, setCurrentRound] = useState(1);
   const [gameCompleted, setGameCompleted] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
+  const [currentScore, setCurrentScore] = useState(0);
+  const [totalGameScore, setTotalGameScore] = useState(0);
   const [roundResults, setRoundResults] = useState([
     { round: 1, points: 850, time: "2:30", attempts: 2, food: "Pizza Margherita", image: "/api/placeholder/60/60", correctLocation: "Napoli, Italia", correctCountry: "🇮🇹 Italia", guessedAttempts: ["Roma, Italia", "Napoli, Italia"] },
     { round: 2, points: 920, time: "1:45", attempts: 1, food: "Sushi", image: "/api/placeholder/60/60", correctLocation: "Tokyo, Giappone", correctCountry: "🇯🇵 Giappone", guessedAttempts: ["Tokyo, Giappone"] },
@@ -23,8 +27,12 @@ const Game = () => {
     { round: 10, points: 900, time: "1:40", attempts: 1, food: "Gelato", image: "/api/placeholder/60/60", correctLocation: "Roma, Italia", correctCountry: "🇮🇹 Italia", guessedAttempts: ["Roma, Italia"] }
   ]);
 
-  // Simula completamento dopo 10 round
-  const handleNextRound = () => {
+  const handleScoreUpdate = (score: number) => {
+    setCurrentScore(score);
+    setTotalGameScore(prev => prev + score);
+  };
+
+  const handleRoundComplete = () => {
     if (currentRound < 10) {
       setCurrentRound(prev => prev + 1);
     } else {
@@ -35,6 +43,17 @@ const Game = () => {
   const handleRestart = () => {
     setCurrentRound(1);
     setGameCompleted(false);
+    setGameStarted(false);
+    setCurrentScore(0);
+    setTotalGameScore(0);
+  };
+
+  const startGame = () => {
+    setGameStarted(true);
+    setCurrentRound(1);
+    setGameCompleted(false);
+    setCurrentScore(0);
+    setTotalGameScore(0);
   };
 
   const totalScore = roundResults.reduce((total, round) => total + round.points, 0);
@@ -64,12 +83,27 @@ const Game = () => {
           <div className={`${isMobile ? "order-2" : "lg:col-span-3"} space-y-4`}>
             {/* Map container */}
             <Card className={`${isMobile ? "h-64 sm:h-80" : "h-2/3"} p-2 sm:p-4 bg-gradient-to-br from-card to-card/80 border-primary/20`}>
-              <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
-                <div className="text-center space-y-2">
-                  <div className="text-4xl sm:text-6xl">🗺️</div>
-                  <p className="text-muted-foreground text-xs sm:text-sm">Mappa del gioco</p>
+              {gameStarted && !gameCompleted ? (
+                <div className="w-full h-full">
+                  <FoodGuessGame 
+                    currentRound={currentRound}
+                    onScoreUpdate={handleScoreUpdate}
+                    onRoundComplete={handleRoundComplete}
+                  />
                 </div>
-              </div>
+              ) : (
+                <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
+                  <div className="text-center space-y-4">
+                    <div className="text-4xl sm:text-6xl">🗺️</div>
+                    <p className="text-muted-foreground text-xs sm:text-sm">Mappa del gioco</p>
+                    {!gameStarted && (
+                      <Button onClick={startGame} className="bg-gradient-to-r from-brand-primary to-brand-secondary text-black">
+                        🍽️ Inizia Food Guess
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              )}
             </Card>
 
             {/* Stats row */}
@@ -82,7 +116,9 @@ const Game = () => {
                       <Timer className="h-3 w-3 sm:h-5 sm:w-5 text-primary" />
                       <h3 className="font-semibold text-xs sm:text-sm">Timer</h3>
                     </div>
-                    <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-primary">02:30</p>
+                    <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-primary">
+                      {gameStarted ? "02:30" : "--:--"}
+                    </p>
                   </div>
                 </div>
               </Card>
@@ -95,7 +131,9 @@ const Game = () => {
                       <Target className="h-3 w-3 sm:h-5 sm:w-5 text-brand-secondary" />
                       <h3 className="font-semibold text-xs sm:text-sm">Punti</h3>
                     </div>
-                    <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-brand-secondary">0</p>
+                    <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-brand-secondary">
+                      {totalGameScore}
+                    </p>
                   </div>
                 </div>
               </Card>
@@ -114,11 +152,19 @@ const Game = () => {
               </Card>
             </div>
 
-            {/* Componente futuro - rettangolo lungo */}
+            {/* Feedback area - mostra quando sbaglia */}
             <Card className={`p-2 sm:p-3 bg-gradient-to-br from-card to-card/80 border-primary/20 ${isMobile ? "h-12" : "h-16"}`}>
-              <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
+              <div className="w-full h-full flex items-center justify-center">
                 <div className="text-center">
-                  <p className="text-muted-foreground text-xs sm:text-sm">Componente futuro per testo</p>
+                  {gameStarted && !gameCompleted ? (
+                    <p className="text-muted-foreground text-xs sm:text-sm">
+                      💡 Suggerimento: Osserva bene gli ingredienti e lo stile di cottura!
+                    </p>
+                  ) : (
+                    <p className="text-muted-foreground text-xs sm:text-sm">
+                      Qui appariranno i suggerimenti durante il gioco
+                    </p>
+                  )}
                 </div>
               </div>
             </Card>
@@ -145,19 +191,32 @@ const Game = () => {
 
             {/* Photo container */}
             <Card className={`p-2 sm:p-4 bg-gradient-to-br from-card to-card/80 border-primary/20 ${isMobile ? "h-48" : "h-1/2"}`}>
-              <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
-                <div className="text-center space-y-2">
-                  <div className="text-4xl sm:text-6xl">📸</div>
-                  <p className="text-muted-foreground text-xs sm:text-sm">Foto del cibo</p>
+              {gameStarted && !gameCompleted ? (
+                <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
+                  <div className="text-center space-y-2">
+                    <div className="text-4xl sm:text-6xl">🍕</div>
+                    <p className="text-muted-foreground text-xs sm:text-sm">Foto attuale del cibo</p>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
+                  <div className="text-center space-y-2">
+                    <div className="text-4xl sm:text-6xl">📸</div>
+                    <p className="text-muted-foreground text-xs sm:text-sm">Foto del cibo</p>
+                  </div>
+                </div>
+              )}
             </Card>
 
             {/* Nome del cibo */}
             <Card className={`p-2 sm:p-3 bg-gradient-to-br from-card to-card/80 border-primary/20 ${isMobile ? "h-12" : "h-16"}`}>
-              <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
+              <div className="w-full h-full flex items-center justify-center">
                 <div className="text-center">
-                  <p className="text-muted-foreground text-xs sm:text-sm">Nome del cibo</p>
+                  {gameStarted && !gameCompleted ? (
+                    <p className="font-semibold text-sm sm:text-base">🍽️ Pizza Margherita</p>
+                  ) : (
+                    <p className="text-muted-foreground text-xs sm:text-sm">Nome del cibo</p>
+                  )}
                 </div>
               </div>
             </Card>
@@ -191,10 +250,10 @@ const Game = () => {
                   <div className="space-y-4">
                     {/* Punteggio totale */}
                     <Card className="p-4 bg-gradient-to-r from-brand-primary/10 to-brand-secondary/10 border-brand-primary/30">
-                      <div className="text-center">
-                        <p className="text-sm text-muted-foreground">Punteggio Totale</p>
-                        <p className="text-3xl font-bold text-brand-primary">{totalScore.toLocaleString()}</p>
-                      </div>
+                  <div className="text-center">
+                    <p className="text-sm text-muted-foreground">Punteggio Totale</p>
+                    <p className="text-3xl font-bold text-brand-primary">{totalGameScore.toLocaleString()}</p>
+                  </div>
                     </Card>
                     
                     {/* Lista round dettagliata */}
@@ -290,9 +349,12 @@ const Game = () => {
             )}
 
             {/* Bottone temporaneo per testare (rimuovi in produzione) */}
-            {!gameCompleted && (
+            {!gameCompleted && !gameStarted && (
               <Button 
-                onClick={handleNextRound}
+                onClick={() => {
+                  setCurrentRound(prev => prev < 10 ? prev + 1 : 10);
+                  if (currentRound >= 10) setGameCompleted(true);
+                }}
                 variant="outline"
                 className="w-full text-xs"
               >
