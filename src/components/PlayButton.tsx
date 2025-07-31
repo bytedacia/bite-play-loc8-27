@@ -6,7 +6,7 @@ const PlayButton = () => {
   const navigate = useNavigate();
   
   const handlePlay = () => {
-    navigate("/game");
+    window.open("/game", "_blank");
   };
 
   return (
