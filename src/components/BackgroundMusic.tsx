@@ -10,7 +10,7 @@ const BackgroundMusic = () => {
     const attemptAutoplay = () => {
       if (iframeRef.current && !hasStarted) {
         setHasStarted(true);
-        const baseUrl = "https://www.youtube.com/embed/LgMvaRwbEOE?autoplay=1&loop=1&playlist=LgMvaRwbEOE&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1";
+        const baseUrl = "https://www.youtube.com/embed/LgMvaRwbEOE?autoplay=1&mute=0&loop=1&playlist=LgMvaRwbEOE&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1&volume=50";
         iframeRef.current.src = baseUrl;
         console.log("Background music started");
       }
