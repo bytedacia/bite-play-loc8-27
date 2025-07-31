@@ -1,4 +1,5 @@
 import VideoBackground from "@/components/VideoBackground";
+import BackgroundMusic from "@/components/BackgroundMusic";
 import Navigation from "@/components/Navigation";
 import PlayButton from "@/components/PlayButton";
 
@@ -6,6 +7,7 @@ const Index = () => {
   return (
     <div className="min-h-screen relative overflow-hidden">
       <VideoBackground />
+      <BackgroundMusic />
       <Navigation />
       
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center text-white">

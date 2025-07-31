@@ -1,27 +1,29 @@
 import { useEffect, useRef, useState } from "react";
 
 const BackgroundMusic = () => {
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [hasStarted, setHasStarted] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    if (hasStarted) return;
+    const audio = audioRef.current;
+    if (!audio) return;
 
-    const attemptAutoplay = () => {
-      if (iframeRef.current && !hasStarted) {
-        setHasStarted(true);
-        const baseUrl = "https://www.youtube.com/embed/LgMvaRwbEOE?autoplay=1&mute=0&loop=1&playlist=LgMvaRwbEOE&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1&volume=50";
-        iframeRef.current.src = baseUrl;
+    const playAudio = () => {
+      audio.play().then(() => {
+        setIsPlaying(true);
         console.log("Background music started");
-      }
+      }).catch((error) => {
+        console.log("Audio autoplay blocked:", error);
+      });
     };
 
-    const timer = setTimeout(attemptAutoplay, 500);
+    // Prova autoplay immediato
+    playAudio();
 
+    // Se l'autoplay è bloccato, aspetta interazione utente
     const handleInteraction = () => {
-      if (!hasStarted) {
-        attemptAutoplay();
-        console.log("Background music started after user interaction");
+      if (!isPlaying) {
+        playAudio();
       }
       document.removeEventListener('click', handleInteraction);
       document.removeEventListener('touchstart', handleInteraction);
@@ -33,31 +35,21 @@ const BackgroundMusic = () => {
     document.addEventListener('keydown', handleInteraction);
 
     return () => {
-      clearTimeout(timer);
       document.removeEventListener('click', handleInteraction);
       document.removeEventListener('touchstart', handleInteraction);
       document.removeEventListener('keydown', handleInteraction);
     };
-  }, [hasStarted]);
+  }, [isPlaying]);
 
   return (
-    <>
-      <iframe
-        ref={iframeRef}
-        style={{ 
-          position: 'absolute', 
-          top: '-9999px', 
-          left: '-9999px', 
-          width: '1px', 
-          height: '1px',
-          border: 'none',
-          opacity: 0,
-          visibility: 'hidden'
-        }}
-        title="Background Music"
-        allow="autoplay; encrypted-media"
-      />
-    </>
+    <audio
+      ref={audioRef}
+      loop
+      autoPlay
+      style={{ display: 'none' }}
+    >
+      <source src="https://cdn.pixabay.com/download/audio/2023/10/05/audio_ec9da82077.mp3" type="audio/mpeg" />
+    </audio>
   );
 };
 
