@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound";
 import ChiSiamo from "./pages/ChiSiamo";
 import Progetto from "./pages/Progetto";
 import Social from "./pages/Social";
+import Game from "./pages/Game";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/chi-siamo" element={<ChiSiamo />} />
           <Route path="/progetto" element={<Progetto />} />
           <Route path="/social" element={<Social />} />
+          <Route path="/game" element={<Game />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
