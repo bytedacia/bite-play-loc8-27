@@ -260,14 +260,14 @@ const Game = () => {
                     </div>
                     
                     {/* Bottone rigioca */}
-                    <Link to="/game">
+                    <div className="mt-6 text-center">
                       <Button 
                         onClick={handleRestart}
-                        className="w-full bg-gradient-to-r from-brand-secondary to-brand-accent hover:from-brand-secondary/90 hover:to-brand-accent/90 text-black font-bold mt-4"
+                        className="w-full bg-gradient-to-r from-brand-secondary to-brand-accent hover:from-brand-secondary/90 hover:to-brand-accent/90 text-black font-bold"
                       >
                         🔄 RIGIOCA
                       </Button>
-                    </Link>
+                    </div>
                   </div>
                 </DialogContent>
               </Dialog>
