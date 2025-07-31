@@ -1,49 +1,31 @@
 import { useEffect, useRef, useState } from "react";
 
 const BackgroundMusic = () => {
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const [hasStarted, setHasStarted] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     if (hasStarted) return;
 
-    const attemptAutoplay = async () => {
-      if (audioRef.current && !hasStarted && !isPlaying) {
-        try {
-          setHasStarted(true);
-          setIsPlaying(true);
-          audioRef.current.volume = 0.3; // 30% volume
-          await audioRef.current.play();
-          console.log("Background music started successfully");
-        } catch (error) {
-          console.log("Autoplay failed, waiting for user interaction:", error);
-          setHasStarted(false);
-          setIsPlaying(false);
-        }
+    const attemptAutoplay = () => {
+      if (iframeRef.current && !hasStarted) {
+        setHasStarted(true);
+        const baseUrl = "https://www.youtube.com/embed/LgMvaRwbEOE?autoplay=1&loop=1&playlist=LgMvaRwbEOE&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1";
+        iframeRef.current.src = baseUrl;
+        console.log("Background music YouTube started");
       }
     };
 
-    // Try autoplay after a short delay
-    const timer = setTimeout(attemptAutoplay, 1000);
+    const timer = setTimeout(attemptAutoplay, 500);
 
-    const handleInteraction = async () => {
-      if (!isPlaying && audioRef.current) {
-        try {
-          setHasStarted(true);
-          setIsPlaying(true);
-          audioRef.current.volume = 0.3;
-          await audioRef.current.play();
-          console.log("Background music started after user interaction");
-          // Remove all listeners after successful start
-          document.removeEventListener('click', handleInteraction);
-          document.removeEventListener('touchstart', handleInteraction);
-          document.removeEventListener('keydown', handleInteraction);
-        } catch (error) {
-          console.log("Failed to start audio:", error);
-          setIsPlaying(false);
-        }
+    const handleInteraction = () => {
+      if (!hasStarted) {
+        attemptAutoplay();
+        console.log("Background music YouTube started after user interaction");
       }
+      document.removeEventListener('click', handleInteraction);
+      document.removeEventListener('touchstart', handleInteraction);
+      document.removeEventListener('keydown', handleInteraction);
     };
 
     document.addEventListener('click', handleInteraction);
@@ -56,28 +38,25 @@ const BackgroundMusic = () => {
       document.removeEventListener('touchstart', handleInteraction);
       document.removeEventListener('keydown', handleInteraction);
     };
-  }, [hasStarted, isPlaying]);
-
-  const handleAudioEnd = () => {
-    if (audioRef.current) {
-      audioRef.current.currentTime = 0;
-      audioRef.current.play().catch(console.error);
-    }
-  };
+  }, [hasStarted]);
 
   return (
     <>
-      <audio
-        ref={audioRef}
-        loop
-        preload="auto"
-        onEnded={handleAudioEnd}
-        style={{ display: 'none' }}
-      >
-        <source src="https://www.bensound.com/bensound-music/bensound-relaxing.mp3" type="audio/mpeg" />
-        <source src="https://www.soundjay.com/misc/sounds/beep-28.mp3" type="audio/mpeg" />
-        Your browser does not support the audio element.
-      </audio>
+      <iframe
+        ref={iframeRef}
+        style={{ 
+          position: 'absolute', 
+          top: '-9999px', 
+          left: '-9999px', 
+          width: '1px', 
+          height: '1px',
+          border: 'none',
+          opacity: 0,
+          visibility: 'hidden'
+        }}
+        title="Background Music"
+        allow="autoplay; encrypted-media"
+      />
     </>
   );
 };
