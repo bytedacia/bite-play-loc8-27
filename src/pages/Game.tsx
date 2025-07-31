@@ -88,7 +88,7 @@ const Game = () => {
           {/* Right sidebar with photo and name */}
           <div className="lg:col-span-1 space-y-4">
             {/* Photo container */}
-            <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20 h-2/3">
+            <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20 h-1/2">
               <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
                 <div className="text-center space-y-2">
                   <div className="text-6xl">📸</div>
@@ -97,8 +97,17 @@ const Game = () => {
               </div>
             </Card>
 
+            {/* Nome del cibo */}
+            <Card className="p-3 bg-gradient-to-br from-card to-card/80 border-primary/20 h-16">
+              <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
+                <div className="text-center">
+                  <p className="text-muted-foreground text-sm">Nome del cibo</p>
+                </div>
+              </div>
+            </Card>
+
             {/* Compass container */}
-            <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20 h-1/2">
+            <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20 h-1/3">
               <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
                 <div className="text-center space-y-2">
                   <div className="text-4xl">🧭</div>
