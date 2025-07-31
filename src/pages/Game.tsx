@@ -192,7 +192,7 @@ const Game = () => {
                     </Card>
                     
                     {/* Lista round dettagliata */}
-                    <div className="max-h-96 overflow-y-auto space-y-3 pr-2">
+                    <div className="max-h-80 overflow-y-auto space-y-3 pr-2">
                       {roundResults.map((result, index) => (
                         <Card key={result.round} className="p-4 bg-gradient-to-r from-card/50 to-card/30 border-primary/10 hover:border-primary/30 transition-all">
                           <div className="grid grid-cols-12 gap-4 items-center">
@@ -259,11 +259,11 @@ const Game = () => {
                       ))}
                     </div>
                     
-                    {/* Bottone rigioca */}
-                    <div className="mt-6 text-center">
+                    {/* Bottone rigioca - SEMPRE VISIBILE */}
+                    <div className="mt-6 pt-4 border-t border-primary/20">
                       <Button 
                         onClick={handleRestart}
-                        className="w-full bg-gradient-to-r from-brand-secondary to-brand-accent hover:from-brand-secondary/90 hover:to-brand-accent/90 text-black font-bold"
+                        className="w-full bg-gradient-to-r from-brand-secondary to-brand-accent hover:from-brand-secondary/90 hover:to-brand-accent/90 text-black font-bold text-lg py-3"
                       >
                         🔄 RIGIOCA
                       </Button>
