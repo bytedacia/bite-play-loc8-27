@@ -76,9 +76,6 @@ const Social = () => {
                   </div>
                 </div>
                 <h3 className="text-3xl font-bold mb-4 group-hover:text-brand-primary transition-colors duration-300">Instagram</h3>
-                <p className="text-white/70 mb-8 leading-relaxed text-lg">
-                  Contenuti visual mozzafiato, stories esclusive e il dietro le quinte della rivoluzione culinaria
-                </p>
                 <div className="flex items-center justify-between">
                   <div className="text-sm text-brand-primary font-bold bg-gradient-to-r from-brand-primary/20 to-brand-primary/10 px-6 py-3 rounded-full border border-brand-primary/30">
                     @loc8abite_official
@@ -104,9 +101,6 @@ const Social = () => {
                   </div>
                 </div>
                 <h3 className="text-3xl font-bold mb-4 group-hover:text-red-500 transition-colors duration-300">YouTube</h3>
-                <p className="text-white/70 mb-8 leading-relaxed text-lg">
-                  Gameplay esclusivi, tutorial da chef professionisti e tornei live con premi incredibili
-                </p>
                 <div className="flex items-center justify-between">
                   <div className="text-sm text-red-500 font-bold bg-gradient-to-r from-red-500/20 to-red-500/10 px-6 py-3 rounded-full border border-red-500/30">
                     Loc8abite Gaming
@@ -134,9 +128,6 @@ const Social = () => {
                   </div>
                 </div>
                 <h3 className="text-3xl font-bold mb-4 group-hover:text-indigo-500 transition-colors duration-300">Discord</h3>
-                <p className="text-white/70 mb-8 leading-relaxed text-lg">
-                  La community più attiva, tornei quotidiani e chat voice esclusivi con i top player
-                </p>
                 <div className="flex items-center justify-between">
                   <div className="text-sm text-indigo-500 font-bold bg-gradient-to-r from-indigo-500/20 to-indigo-500/10 px-6 py-3 rounded-full border border-indigo-500/30">
                     discord.gg/loc8abite
@@ -158,9 +149,6 @@ const Social = () => {
                   <Twitter className="h-16 w-16 text-white group-hover:scale-125 transition-all duration-500" />
                 </div>
                 <h3 className="text-3xl font-bold mb-4">X (Twitter)</h3>
-                <p className="text-white/70 mb-8 leading-relaxed text-lg">
-                  News in tempo reale, aggiornamenti di gioco e interazioni dirette con il team
-                </p>
                 <div className="text-sm text-white font-bold bg-white/10 px-6 py-3 rounded-full border border-white/20">
                   @loc8abite
                 </div>
@@ -180,9 +168,6 @@ const Social = () => {
                   <Facebook className="h-16 w-16 text-blue-500 group-hover:scale-125 transition-all duration-500" />
                 </div>
                 <h3 className="text-3xl font-bold mb-4 group-hover:text-blue-500 transition-colors duration-300">Facebook</h3>
-                <p className="text-white/70 mb-8 leading-relaxed text-lg">
-                  Eventi dal vivo, discussioni approfondite e la community più professionale
-                </p>
                 <div className="text-sm text-blue-500 font-bold bg-blue-500/10 px-6 py-3 rounded-full border border-blue-500/30">
                   Loc8abite Community
                 </div>
@@ -203,9 +188,6 @@ const Social = () => {
                   </div>
                 </div>
                 <h3 className="text-3xl font-bold mb-4 group-hover:text-brand-secondary transition-colors duration-300">Email</h3>
-                <p className="text-white/70 mb-8 leading-relaxed text-lg">
-                  Partnership, sponsorship e collaborazioni business di alto livello
-                </p>
                 <div className="text-sm text-brand-secondary font-bold bg-brand-secondary/10 px-6 py-3 rounded-full border border-brand-secondary/30">
                   info@loc8abite.com
                 </div>
