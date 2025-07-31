@@ -9,16 +9,16 @@ const Game = () => {
   const [currentRound, setCurrentRound] = useState(1);
   const [gameCompleted, setGameCompleted] = useState(false);
   const [roundResults, setRoundResults] = useState([
-    { round: 1, points: 850, time: "2:30", attempts: 2, food: "Pizza Margherita", image: "🍕", correctLocation: "Napoli, Italia", guessedLocation: "Roma, Italia", distance: "225 km" },
-    { round: 2, points: 920, time: "1:45", attempts: 1, food: "Sushi", image: "🍣", correctLocation: "Tokyo, Giappone", guessedLocation: "Osaka, Giappone", distance: "515 km" },
-    { round: 3, points: 650, time: "3:20", attempts: 3, food: "Croissant", image: "🥐", correctLocation: "Parigi, Francia", guessedLocation: "Londra, UK", distance: "344 km" },
-    { round: 4, points: 780, time: "2:10", attempts: 2, food: "Tacos", image: "🌮", correctLocation: "Città del Messico", guessedLocation: "Los Angeles, USA", distance: "2445 km" },
-    { round: 5, points: 950, time: "1:30", attempts: 1, food: "Paella", image: "🥘", correctLocation: "Valencia, Spagna", guessedLocation: "Barcelona, Spagna", distance: "350 km" },
-    { round: 6, points: 720, time: "2:50", attempts: 3, food: "Pad Thai", image: "🍜", correctLocation: "Bangkok, Tailandia", guessedLocation: "Singapore", distance: "1420 km" },
-    { round: 7, points: 890, time: "1:55", attempts: 1, food: "Hamburger", image: "🍔", correctLocation: "New York, USA", guessedLocation: "Chicago, USA", distance: "1270 km" },
-    { round: 8, points: 630, time: "3:45", attempts: 3, food: "Ramen", image: "🍲", correctLocation: "Tokyo, Giappone", guessedLocation: "Seoul, Korea", distance: "1160 km" },
-    { round: 9, points: 810, time: "2:25", attempts: 2, food: "Fish & Chips", image: "🐟", correctLocation: "Londra, UK", guessedLocation: "Dublino, Irlanda", distance: "463 km" },
-    { round: 10, points: 900, time: "1:40", attempts: 1, food: "Gelato", image: "🍨", correctLocation: "Roma, Italia", guessedLocation: "Milano, Italia", distance: "575 km" }
+    { round: 1, points: 850, time: "2:30", attempts: 2, food: "Pizza Margherita", image: "/api/placeholder/60/60", correctLocation: "Napoli, Italia", guessedLocation: "Roma, Italia", distance: "225 km" },
+    { round: 2, points: 920, time: "1:45", attempts: 1, food: "Sushi", image: "/api/placeholder/60/60", correctLocation: "Tokyo, Giappone", guessedLocation: "Osaka, Giappone", distance: "515 km" },
+    { round: 3, points: 650, time: "3:20", attempts: 3, food: "Croissant", image: "/api/placeholder/60/60", correctLocation: "Parigi, Francia", guessedLocation: "Londra, UK", distance: "344 km" },
+    { round: 4, points: 780, time: "2:10", attempts: 2, food: "Tacos", image: "/api/placeholder/60/60", correctLocation: "Città del Messico", guessedLocation: "Los Angeles, USA", distance: "2445 km" },
+    { round: 5, points: 950, time: "1:30", attempts: 1, food: "Paella", image: "/api/placeholder/60/60", correctLocation: "Valencia, Spagna", guessedLocation: "Barcelona, Spagna", distance: "350 km" },
+    { round: 6, points: 720, time: "2:50", attempts: 3, food: "Pad Thai", image: "/api/placeholder/60/60", correctLocation: "Bangkok, Tailandia", guessedLocation: "Singapore", distance: "1420 km" },
+    { round: 7, points: 890, time: "1:55", attempts: 1, food: "Hamburger", image: "/api/placeholder/60/60", correctLocation: "New York, USA", guessedLocation: "Chicago, USA", distance: "1270 km" },
+    { round: 8, points: 630, time: "3:45", attempts: 3, food: "Ramen", image: "/api/placeholder/60/60", correctLocation: "Tokyo, Giappone", guessedLocation: "Seoul, Korea", distance: "1160 km" },
+    { round: 9, points: 810, time: "2:25", attempts: 2, food: "Fish & Chips", image: "/api/placeholder/60/60", correctLocation: "Londra, UK", guessedLocation: "Dublino, Irlanda", distance: "463 km" },
+    { round: 10, points: 900, time: "1:40", attempts: 1, food: "Gelato", image: "/api/placeholder/60/60", correctLocation: "Roma, Italia", guessedLocation: "Milano, Italia", distance: "575 km" }
   ]);
 
   // Simula completamento dopo 10 round
@@ -203,8 +203,12 @@ const Game = () => {
                                   {result.round}
                                 </div>
                                 <div>
-                                  <div className="text-2xl">{result.image}</div>
-                                  <div className="text-xs font-semibold text-foreground">{result.food}</div>
+                                  <img 
+                                    src={result.image} 
+                                    alt={result.food}
+                                    className="w-12 h-12 rounded-lg object-cover border-2 border-primary/20"
+                                  />
+                                  <div className="text-xs font-semibold text-foreground mt-1">{result.food}</div>
                                 </div>
                               </div>
                             </div>
