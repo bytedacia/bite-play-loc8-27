@@ -1,62 +1,44 @@
-import { useEffect, useRef } from "react";
-
-// Global variables to prevent multiple instances
-let globalAudioStarted = false;
-let globalIframe: HTMLIFrameElement | null = null;
+import { useEffect, useRef, useState } from "react";
 
 const BackgroundMusic = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
-    // If audio already started globally, don't do anything
-    if (globalAudioStarted) {
-      console.log("Audio already started globally, skipping");
-      return;
-    }
+    if (hasStarted) return;
 
     const attemptAutoplay = () => {
-      if (iframeRef.current && !globalAudioStarted) {
-        globalAudioStarted = true;
-        globalIframe = iframeRef.current;
+      if (iframeRef.current && !hasStarted) {
+        setHasStarted(true);
         const baseUrl = "https://www.youtube.com/embed/LgMvaRwbEOE?autoplay=1&loop=1&playlist=LgMvaRwbEOE&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1";
         iframeRef.current.src = baseUrl;
-        console.log("Background music started - GLOBAL SINGLETON");
+        console.log("Background music started");
       }
     };
 
     const timer = setTimeout(attemptAutoplay, 500);
 
     const handleInteraction = () => {
-      if (!globalAudioStarted) {
+      if (!hasStarted) {
         attemptAutoplay();
-        console.log("Background music started after interaction - GLOBAL SINGLETON");
+        console.log("Background music started after user interaction");
       }
-      // Remove all listeners globally
       document.removeEventListener('click', handleInteraction);
       document.removeEventListener('touchstart', handleInteraction);
       document.removeEventListener('keydown', handleInteraction);
     };
 
-    // Only add listeners if not already started
-    if (!globalAudioStarted) {
-      document.addEventListener('click', handleInteraction);
-      document.addEventListener('touchstart', handleInteraction);
-      document.addEventListener('keydown', handleInteraction);
-    }
+    document.addEventListener('click', handleInteraction);
+    document.addEventListener('touchstart', handleInteraction);
+    document.addEventListener('keydown', handleInteraction);
 
     return () => {
       clearTimeout(timer);
-      // Don't remove global flag on unmount to prevent restart
       document.removeEventListener('click', handleInteraction);
       document.removeEventListener('touchstart', handleInteraction);
       document.removeEventListener('keydown', handleInteraction);
     };
-  }, []);
-
-  // Only render iframe if this is the first instance
-  if (globalAudioStarted && globalIframe && globalIframe !== iframeRef.current) {
-    return null;
-  }
+  }, [hasStarted]);
 
   return (
     <>
