@@ -1,44 +1,41 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-// Global variables to prevent multiple instances
-let globalAudioStarted = false;
-let globalIframe: HTMLIFrameElement | null = null;
+// Global flag to prevent multiple instances
+let isGlobalAudioPlaying = false;
 
 const BackgroundMusic = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
-    // If audio already started globally, don't do anything
-    if (globalAudioStarted) {
-      console.log("Audio already started globally, skipping");
-      return;
-    }
+    // Check if audio is already playing globally
+    if (hasStarted || isGlobalAudioPlaying) return;
 
     const attemptAutoplay = () => {
-      if (iframeRef.current && !globalAudioStarted) {
-        globalAudioStarted = true;
-        globalIframe = iframeRef.current;
+      if (iframeRef.current && !hasStarted && !isGlobalAudioPlaying) {
+        setHasStarted(true);
+        isGlobalAudioPlaying = true;
         const baseUrl = "https://www.youtube.com/embed/LgMvaRwbEOE?autoplay=1&loop=1&playlist=LgMvaRwbEOE&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1";
         iframeRef.current.src = baseUrl;
-        console.log("Background music started - GLOBAL SINGLETON");
+        console.log("Background music YouTube started - SINGLE INSTANCE");
       }
     };
 
     const timer = setTimeout(attemptAutoplay, 500);
 
     const handleInteraction = () => {
-      if (!globalAudioStarted) {
+      if (!hasStarted && !isGlobalAudioPlaying) {
         attemptAutoplay();
-        console.log("Background music started after interaction - GLOBAL SINGLETON");
+        console.log("Background music YouTube started after user interaction - SINGLE INSTANCE");
+        // Remove listeners immediately after starting
+        document.removeEventListener('click', handleInteraction);
+        document.removeEventListener('touchstart', handleInteraction);
+        document.removeEventListener('keydown', handleInteraction);
       }
-      // Remove all listeners globally
-      document.removeEventListener('click', handleInteraction);
-      document.removeEventListener('touchstart', handleInteraction);
-      document.removeEventListener('keydown', handleInteraction);
     };
 
-    // Only add listeners if not already started
-    if (!globalAudioStarted) {
+    // Only add listeners if audio isn't already playing
+    if (!isGlobalAudioPlaying) {
       document.addEventListener('click', handleInteraction);
       document.addEventListener('touchstart', handleInteraction);
       document.addEventListener('keydown', handleInteraction);
@@ -46,15 +43,14 @@ const BackgroundMusic = () => {
 
     return () => {
       clearTimeout(timer);
-      // Don't remove global flag on unmount to prevent restart
       document.removeEventListener('click', handleInteraction);
       document.removeEventListener('touchstart', handleInteraction);
       document.removeEventListener('keydown', handleInteraction);
     };
-  }, []);
+  }, [hasStarted]);
 
-  // Only render iframe if this is the first instance
-  if (globalAudioStarted && globalIframe && globalIframe !== iframeRef.current) {
+  // Don't render iframe if audio is already playing globally
+  if (isGlobalAudioPlaying && !hasStarted) {
     return null;
   }
 
