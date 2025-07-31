@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft, Instagram, Twitter, Facebook, Youtube, Mail, Share2, Heart, Users, Globe } from "lucide-react";
+import { ArrowLeft, Instagram, Twitter, Facebook, Youtube, Mail, Share2 } from "lucide-react";
 
 const Social = () => {
   return (
@@ -24,35 +24,6 @@ const Social = () => {
                 Social Hub
               </h1>
             </div>
-            <p className="text-xl text-foreground/80 max-w-2xl mx-auto leading-relaxed">
-              Unisciti alla nostra <span className="text-brand-primary font-semibold">community globale</span> e 
-              vivi l'esperienza culinaria più coinvolgente del web
-            </p>
-            
-            {/* Stats */}
-            <div className="flex justify-center gap-8 mt-8">
-              <div className="text-center">
-                <div className="flex items-center justify-center gap-2 text-brand-primary mb-1">
-                  <Users className="h-5 w-5" />
-                  <span className="text-2xl font-bold">10K+</span>
-                </div>
-                <p className="text-sm text-foreground/60">Followers</p>
-              </div>
-              <div className="text-center">
-                <div className="flex items-center justify-center gap-2 text-brand-secondary mb-1">
-                  <Heart className="h-5 w-5" />
-                  <span className="text-2xl font-bold">50K+</span>
-                </div>
-                <p className="text-sm text-foreground/60">Likes</p>
-              </div>
-              <div className="text-center">
-                <div className="flex items-center justify-center gap-2 text-brand-accent mb-1">
-                  <Globe className="h-5 w-5" />
-                  <span className="text-2xl font-bold">20+</span>
-                </div>
-                <p className="text-sm text-foreground/60">Paesi</p>
-              </div>
-            </div>
           </div>
 
           {/* Social Platform Cards */}
@@ -64,9 +35,6 @@ const Social = () => {
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-brand-primary/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
               <Instagram className="h-12 w-12 text-brand-primary mb-6 group-hover:scale-110 transition-transform duration-300" />
               <h3 className="text-2xl font-bold mb-3 group-hover:text-brand-primary transition-colors">Instagram</h3>
-              <p className="text-foreground/70 mb-4 leading-relaxed">
-                Foto spettacolari dei piatti più belli, stories esclusive e dietro le quinte del progetto
-              </p>
               <div className="text-sm text-brand-primary font-medium">@loc8abite_official</div>
             </a>
             
@@ -77,9 +45,6 @@ const Social = () => {
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-brand-secondary/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
               <Twitter className="h-12 w-12 text-brand-secondary mb-6 group-hover:scale-110 transition-transform duration-300" />
               <h3 className="text-2xl font-bold mb-3 group-hover:text-brand-secondary transition-colors">Twitter</h3>
-              <p className="text-foreground/70 mb-4 leading-relaxed">
-                Aggiornamenti in tempo reale, news del progetto e interazioni dirette con la community
-              </p>
               <div className="text-sm text-brand-secondary font-medium">@loc8abite</div>
             </a>
             
@@ -90,9 +55,6 @@ const Social = () => {
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-brand-accent/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
               <Facebook className="h-12 w-12 text-brand-accent mb-6 group-hover:scale-110 transition-transform duration-300" />
               <h3 className="text-2xl font-bold mb-3 group-hover:text-brand-accent transition-colors">Facebook</h3>
-              <p className="text-foreground/70 mb-4 leading-relaxed">
-                Community attiva, eventi culinari dal vivo e discussioni approfondite sui piatti
-              </p>
               <div className="text-sm text-brand-accent font-medium">Loc8abite Community</div>
             </a>
             
@@ -103,9 +65,6 @@ const Social = () => {
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-brand-primary/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
               <Youtube className="h-12 w-12 text-brand-primary mb-6 group-hover:scale-110 transition-transform duration-300" />
               <h3 className="text-2xl font-bold mb-3 group-hover:text-brand-primary transition-colors">YouTube</h3>
-              <p className="text-foreground/70 mb-4 leading-relaxed">
-                Tutorial esclusivi, gameplay commentati e contenuti video premium per i veri appassionati
-              </p>
               <div className="text-sm text-brand-primary font-medium">Loc8abite Gaming</div>
             </a>
             
@@ -116,9 +75,6 @@ const Social = () => {
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-brand-secondary/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
               <Mail className="h-12 w-12 text-brand-secondary mb-6 group-hover:scale-110 transition-transform duration-300" />
               <h3 className="text-2xl font-bold mb-3 group-hover:text-brand-secondary transition-colors">Email</h3>
-              <p className="text-foreground/70 mb-4 leading-relaxed">
-                Contatto diretto per partnership, collaborazioni e proposte commerciali
-              </p>
               <div className="text-sm text-brand-secondary font-medium">info@loc8abite.com</div>
             </a>
           </div>
