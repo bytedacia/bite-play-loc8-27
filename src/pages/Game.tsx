@@ -4,16 +4,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { ArrowLeft, Timer, Target, RotateCcw, Trophy } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { useIsMobile } from "@/hooks/use-mobile";
-import FoodGuessGame from "@/components/game/FoodGuessGame";
 
 const Game = () => {
-  const isMobile = useIsMobile();
   const [currentRound, setCurrentRound] = useState(1);
   const [gameCompleted, setGameCompleted] = useState(false);
-  const [gameStarted, setGameStarted] = useState(false);
-  const [currentScore, setCurrentScore] = useState(0);
-  const [totalGameScore, setTotalGameScore] = useState(0);
   const [roundResults, setRoundResults] = useState([
     { round: 1, points: 850, time: "2:30", attempts: 2, food: "Pizza Margherita", image: "/api/placeholder/60/60", correctLocation: "Napoli, Italia", correctCountry: "🇮🇹 Italia", guessedAttempts: ["Roma, Italia", "Napoli, Italia"] },
     { round: 2, points: 920, time: "1:45", attempts: 1, food: "Sushi", image: "/api/placeholder/60/60", correctLocation: "Tokyo, Giappone", correctCountry: "🇯🇵 Giappone", guessedAttempts: ["Tokyo, Giappone"] },
@@ -27,12 +21,8 @@ const Game = () => {
     { round: 10, points: 900, time: "1:40", attempts: 1, food: "Gelato", image: "/api/placeholder/60/60", correctLocation: "Roma, Italia", correctCountry: "🇮🇹 Italia", guessedAttempts: ["Roma, Italia"] }
   ]);
 
-  const handleScoreUpdate = (score: number) => {
-    setCurrentScore(score);
-    setTotalGameScore(prev => prev + score);
-  };
-
-  const handleRoundComplete = () => {
+  // Simula completamento dopo 10 round
+  const handleNextRound = () => {
     if (currentRound < 10) {
       setCurrentRound(prev => prev + 1);
     } else {
@@ -43,145 +33,103 @@ const Game = () => {
   const handleRestart = () => {
     setCurrentRound(1);
     setGameCompleted(false);
-    setGameStarted(false);
-    setCurrentScore(0);
-    setTotalGameScore(0);
-  };
-
-  const startGame = () => {
-    setGameStarted(true);
-    setCurrentRound(1);
-    setGameCompleted(false);
-    setCurrentScore(0);
-    setTotalGameScore(0);
   };
 
   const totalScore = roundResults.reduce((total, round) => total + round.points, 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-primary/5 p-2 sm:p-4">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-primary/5 p-4">
       <div className="max-w-7xl mx-auto">
         {/* Header with back button */}
-        <div className="mb-4 sm:mb-6">
+        <div className="mb-6">
           <Link to="/">
-            <Button variant="outline" className="mb-4 text-xs sm:text-sm">
-              <ArrowLeft className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+            <Button variant="outline" className="mb-4">
+              <ArrowLeft className="mr-2 h-4 w-4" />
               Torna alla Home
             </Button>
           </Link>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-accent bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-accent bg-clip-text text-transparent">
             FOOD GUESS
           </h1>
         </div>
 
-        <div className={`grid gap-4 sm:gap-6 ${
-          isMobile 
-            ? "grid-cols-1 space-y-4" 
-            : "grid-cols-1 lg:grid-cols-4 h-[calc(100vh-200px)]"
-        }`}>
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[calc(100vh-200px)]">
           {/* Main map area */}
-          <div className={`${isMobile ? "order-2" : "lg:col-span-3"} space-y-4`}>
+          <div className="lg:col-span-3 space-y-4">
             {/* Map container */}
-            <Card className={`${isMobile ? "h-64 sm:h-80" : "h-2/3"} p-2 sm:p-4 bg-gradient-to-br from-card to-card/80 border-primary/20`}>
-              {gameStarted && !gameCompleted ? (
-                <div className="w-full h-full">
-                  <FoodGuessGame 
-                    currentRound={currentRound}
-                    onScoreUpdate={handleScoreUpdate}
-                    onRoundComplete={handleRoundComplete}
-                  />
+            <Card className="h-2/3 p-4 bg-gradient-to-br from-card to-card/80 border-primary/20">
+              <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
+                <div className="text-center space-y-2">
+                  <div className="text-6xl">🗺️</div>
+                  <p className="text-muted-foreground">Mappa del gioco</p>
                 </div>
-              ) : (
-                <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
-                  <div className="text-center space-y-4">
-                    <div className="text-4xl sm:text-6xl">🗺️</div>
-                    <p className="text-muted-foreground text-xs sm:text-sm">Mappa del gioco</p>
-                    {!gameStarted && (
-                      <Button onClick={startGame} className="bg-gradient-to-r from-brand-primary to-brand-secondary text-black">
-                        🍽️ Inizia Food Guess
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              )}
+              </div>
             </Card>
 
             {/* Stats row */}
-            <div className={`grid grid-cols-3 gap-2 sm:gap-4 ${isMobile ? "h-auto" : "h-1/4"}`}>
+            <div className="grid grid-cols-3 gap-4 h-1/4">
               {/* Timer */}
-              <Card className="p-2 sm:p-4 bg-gradient-to-br from-card to-card/80 border-primary/20">
+              <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20">
                 <div className="flex items-center justify-between h-full">
-                  <div className="space-y-1 sm:space-y-2">
-                    <div className="flex items-center gap-1 sm:gap-2">
-                      <Timer className="h-3 w-3 sm:h-5 sm:w-5 text-primary" />
-                      <h3 className="font-semibold text-xs sm:text-sm">Timer</h3>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Timer className="h-5 w-5 text-primary" />
+                      <h3 className="font-semibold">Timer</h3>
                     </div>
-                    <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-primary">
-                      {gameStarted ? "02:30" : "--:--"}
-                    </p>
+                    <p className="text-3xl font-bold text-primary">02:30</p>
                   </div>
                 </div>
               </Card>
 
               {/* Punti */}
-              <Card className="p-2 sm:p-4 bg-gradient-to-br from-card to-card/80 border-primary/20">
+              <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20">
                 <div className="flex items-center justify-between h-full">
-                  <div className="space-y-1 sm:space-y-2">
-                    <div className="flex items-center gap-1 sm:gap-2">
-                      <Target className="h-3 w-3 sm:h-5 sm:w-5 text-brand-secondary" />
-                      <h3 className="font-semibold text-xs sm:text-sm">Punti</h3>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Target className="h-5 w-5 text-brand-secondary" />
+                      <h3 className="font-semibold">Punti</h3>
                     </div>
-                    <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-brand-secondary">
-                      {totalGameScore}
-                    </p>
+                    <p className="text-3xl font-bold text-brand-secondary">0</p>
                   </div>
                 </div>
               </Card>
 
               {/* Tentativi */}
-              <Card className="p-2 sm:p-4 bg-gradient-to-br from-card to-card/80 border-primary/20">
+              <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20">
                 <div className="flex items-center justify-between h-full">
-                  <div className="space-y-1 sm:space-y-2">
-                    <div className="flex items-center gap-1 sm:gap-2">
-                      <RotateCcw className="h-3 w-3 sm:h-5 sm:w-5 text-brand-accent" />
-                      <h3 className="font-semibold text-xs sm:text-sm">Tentativi</h3>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <RotateCcw className="h-5 w-5 text-brand-accent" />
+                      <h3 className="font-semibold">Tentativi</h3>
                     </div>
-                    <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-brand-accent">3</p>
+                    <p className="text-3xl font-bold text-brand-accent">3</p>
                   </div>
                 </div>
               </Card>
             </div>
 
-            {/* Feedback area - mostra quando sbaglia */}
-            <Card className={`p-2 sm:p-3 bg-gradient-to-br from-card to-card/80 border-primary/20 ${isMobile ? "h-12" : "h-16"}`}>
-              <div className="w-full h-full flex items-center justify-center">
+            {/* Componente futuro - rettangolo lungo */}
+            <Card className="p-3 bg-gradient-to-br from-card to-card/80 border-primary/20 h-16">
+              <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
                 <div className="text-center">
-                  {gameStarted && !gameCompleted ? (
-                    <p className="text-muted-foreground text-xs sm:text-sm">
-                      💡 Suggerimento: Osserva bene gli ingredienti e lo stile di cottura!
-                    </p>
-                  ) : (
-                    <p className="text-muted-foreground text-xs sm:text-sm">
-                      Qui appariranno i suggerimenti durante il gioco
-                    </p>
-                  )}
+                  <p className="text-muted-foreground text-sm">Componente futuro per testo</p>
                 </div>
               </div>
             </Card>
           </div>
 
           {/* Right sidebar with photo and name */}
-          <div className={`${isMobile ? "order-1" : "lg:col-span-1"} space-y-4`}>
+          <div className="lg:col-span-1 space-y-4">
             {/* Round indicator */}
-            <Card className={`p-2 sm:p-3 bg-gradient-to-br from-card to-card/80 border-primary/20 ${isMobile ? "h-12" : "h-14"}`}>
-              <div className="space-y-1 sm:space-y-2">
+            <Card className="p-3 bg-gradient-to-br from-card to-card/80 border-primary/20 h-14">
+              <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <p className="text-muted-foreground text-xs sm:text-sm font-semibold">Round {currentRound}/10</p>
+                  <p className="text-muted-foreground text-sm font-semibold">Round {currentRound}/10</p>
                   <p className="text-muted-foreground text-xs">{(currentRound / 10 * 100)}%</p>
                 </div>
                 {/* Progress bar */}
-                <div className="w-full bg-muted/30 rounded-full h-1.5 sm:h-2 overflow-hidden">
-                  <div className="bg-gradient-to-r from-primary to-brand-secondary h-1.5 sm:h-2 rounded-full transition-all duration-500 ease-out relative" style={{width: `${(currentRound / 10 * 100)}%`}}>
+                <div className="w-full bg-muted/30 rounded-full h-2 overflow-hidden">
+                  <div className="bg-gradient-to-r from-primary to-brand-secondary h-2 rounded-full transition-all duration-500 ease-out relative" style={{width: `${(currentRound / 10 * 100)}%`}}>
                     {/* Shimmer effect */}
                     <div className="absolute inset-0 -skew-x-12 bg-gradient-to-r from-transparent via-white/50 to-transparent w-6 animate-[slide_1.5s_ease-in-out_infinite] -translate-x-full"></div>
                   </div>
@@ -190,43 +138,30 @@ const Game = () => {
             </Card>
 
             {/* Photo container */}
-            <Card className={`p-2 sm:p-4 bg-gradient-to-br from-card to-card/80 border-primary/20 ${isMobile ? "h-48" : "h-1/2"}`}>
-              {gameStarted && !gameCompleted ? (
-                <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
-                  <div className="text-center space-y-2">
-                    <div className="text-4xl sm:text-6xl">🍕</div>
-                    <p className="text-muted-foreground text-xs sm:text-sm">Foto attuale del cibo</p>
-                  </div>
+            <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20 h-1/2">
+              <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
+                <div className="text-center space-y-2">
+                  <div className="text-6xl">📸</div>
+                  <p className="text-muted-foreground">Foto del cibo</p>
                 </div>
-              ) : (
-                <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
-                  <div className="text-center space-y-2">
-                    <div className="text-4xl sm:text-6xl">📸</div>
-                    <p className="text-muted-foreground text-xs sm:text-sm">Foto del cibo</p>
-                  </div>
-                </div>
-              )}
+              </div>
             </Card>
 
             {/* Nome del cibo */}
-            <Card className={`p-2 sm:p-3 bg-gradient-to-br from-card to-card/80 border-primary/20 ${isMobile ? "h-12" : "h-16"}`}>
-              <div className="w-full h-full flex items-center justify-center">
+            <Card className="p-3 bg-gradient-to-br from-card to-card/80 border-primary/20 h-16">
+              <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
                 <div className="text-center">
-                  {gameStarted && !gameCompleted ? (
-                    <p className="font-semibold text-sm sm:text-base">🍽️ Pizza Margherita</p>
-                  ) : (
-                    <p className="text-muted-foreground text-xs sm:text-sm">Nome del cibo</p>
-                  )}
+                  <p className="text-muted-foreground text-sm">Nome del cibo</p>
                 </div>
               </div>
             </Card>
 
             {/* Compass container */}
-            <Card className={`p-2 sm:p-4 bg-gradient-to-br from-card to-card/80 border-primary/20 ${isMobile ? "h-32" : "h-1/4"}`}>
+            <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20 h-1/4">
               <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
-                <div className="text-center space-y-1 sm:space-y-2">
-                  <div className="text-3xl sm:text-4xl">🧭</div>
-                  <p className="text-muted-foreground text-xs sm:text-sm">Bussola 3D</p>
+                <div className="text-center space-y-2">
+                  <div className="text-4xl">🧭</div>
+                  <p className="text-muted-foreground text-sm">Bussola 3D</p>
                 </div>
               </div>
             </Card>
@@ -240,7 +175,7 @@ const Game = () => {
                     Vedi Classifica
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-4xl mx-auto bg-gradient-to-br from-card to-card/80 border-primary/20 max-h-[90vh] overflow-hidden w-[95vw] sm:w-full">
+                <DialogContent className="max-w-4xl mx-auto bg-gradient-to-br from-card to-card/80 border-primary/20 max-h-[90vh] overflow-hidden">
                   <DialogHeader>
                     <DialogTitle className="text-center text-2xl font-bold bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-accent bg-clip-text text-transparent">
                       🏆 CLASSIFICA FINALE
@@ -250,58 +185,48 @@ const Game = () => {
                   <div className="space-y-4">
                     {/* Punteggio totale */}
                     <Card className="p-4 bg-gradient-to-r from-brand-primary/10 to-brand-secondary/10 border-brand-primary/30">
-                  <div className="text-center">
-                    <p className="text-sm text-muted-foreground">Punteggio Totale</p>
-                    <p className="text-3xl font-bold text-brand-primary">{totalGameScore.toLocaleString()}</p>
-                  </div>
+                      <div className="text-center">
+                        <p className="text-sm text-muted-foreground">Punteggio Totale</p>
+                        <p className="text-3xl font-bold text-brand-primary">{totalScore.toLocaleString()}</p>
+                      </div>
                     </Card>
                     
                     {/* Lista round dettagliata */}
                     <div className="max-h-80 overflow-y-auto space-y-3 pr-2">
                       {roundResults.map((result, index) => (
-                        <Card key={result.round} className="p-2 sm:p-4 bg-gradient-to-r from-card/50 to-card/30 border-primary/10 hover:border-primary/30 transition-all">
-                          <div className={`grid gap-2 sm:gap-4 items-center ${isMobile ? "grid-cols-1" : "grid-cols-12"}`}>
+                        <Card key={result.round} className="p-4 bg-gradient-to-r from-card/50 to-card/30 border-primary/10 hover:border-primary/30 transition-all">
+                          <div className="grid grid-cols-12 gap-4 items-center">
                             {/* Round number e cibo */}
-                            <div className={isMobile ? "flex items-center gap-3 mb-2" : "col-span-3"}>
+                            <div className="col-span-3">
                               <div className="flex items-center gap-3">
-                                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-r from-brand-primary to-brand-secondary rounded-full flex items-center justify-center text-xs sm:text-sm font-bold text-black">
+                                <div className="w-8 h-8 bg-gradient-to-r from-brand-primary to-brand-secondary rounded-full flex items-center justify-center text-sm font-bold text-black">
                                   {result.round}
                                 </div>
-                                <div className="flex items-center gap-2">
+                                <div>
                                   <img 
                                     src={result.image} 
                                     alt={result.food}
-                                    className="w-8 h-8 sm:w-12 sm:h-12 rounded-lg object-cover border-2 border-primary/20"
+                                    className="w-12 h-12 rounded-lg object-cover border-2 border-primary/20"
                                   />
-                                  <div className="text-xs sm:text-sm font-semibold text-foreground">{result.food}</div>
+                                  <div className="text-xs font-semibold text-foreground mt-1">{result.food}</div>
                                 </div>
                               </div>
                             </div>
                             
                             {/* Punteggio e stats */}
-                            <div className={`${isMobile ? "flex justify-between mb-2" : "col-span-2"} text-center`}>
-                              <div>
-                                <div className="text-sm sm:text-lg font-bold text-brand-primary">{result.points}</div>
-                                <div className="text-xs text-muted-foreground">punti</div>
-                              </div>
-                              {isMobile && (
-                                <div className="text-center">
-                                  <div className="text-xs sm:text-sm">⏱️ {result.time}</div>
-                                  <div className="text-xs sm:text-sm">🎯 {result.attempts} tent.</div>
-                                </div>
-                              )}
+                            <div className="col-span-2 text-center">
+                              <div className="text-lg font-bold text-brand-primary">{result.points}</div>
+                              <div className="text-xs text-muted-foreground">punti</div>
                             </div>
                             
-                            {/* Tempo e tentativi - solo desktop */}
-                            {!isMobile && (
-                              <div className="col-span-2 text-center">
-                                <div className="text-sm">⏱️ {result.time}</div>
-                                <div className="text-sm">🎯 {result.attempts} tent.</div>
-                              </div>
-                            )}
+                            {/* Tempo e tentativi */}
+                            <div className="col-span-2 text-center">
+                              <div className="text-sm">⏱️ {result.time}</div>
+                              <div className="text-sm">🎯 {result.attempts} tent.</div>
+                            </div>
                             
                             {/* Posizioni e tentativi */}
-                            <div className={isMobile ? "" : "col-span-5"}>
+                            <div className="col-span-5">
                               <div className="space-y-2">
                                 <div className="flex items-center gap-2">
                                   <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">✓ CORRETTO</span>
@@ -349,12 +274,9 @@ const Game = () => {
             )}
 
             {/* Bottone temporaneo per testare (rimuovi in produzione) */}
-            {!gameCompleted && !gameStarted && (
+            {!gameCompleted && (
               <Button 
-                onClick={() => {
-                  setCurrentRound(prev => prev < 10 ? prev + 1 : 10);
-                  if (currentRound >= 10) setGameCompleted(true);
-                }}
+                onClick={handleNextRound}
                 variant="outline"
                 className="w-full text-xs"
               >
