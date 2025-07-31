@@ -12,10 +12,10 @@ const Game = () => {
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center text-white p-4">
         <Link 
           to="/" 
-          className="absolute top-8 left-8 inline-flex items-center text-white/80 hover:text-white transition-all duration-300 group"
+          className="absolute top-8 right-8 inline-flex items-center text-white/80 hover:text-white transition-all duration-300 group bg-black/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20 hover:border-brand-primary/50"
         >
           <ArrowLeft className="mr-2 h-4 w-4 group-hover:-translate-x-1 transition-transform duration-300" />
-          Home
+          Torna alla Home
         </Link>
 
         <div className="text-center space-y-8 max-w-4xl">
