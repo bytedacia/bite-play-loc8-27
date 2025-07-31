@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const PlayButton = () => {
+  const navigate = useNavigate();
+  
   const handlePlay = () => {
-    // Here you can add the game logic or navigation
-    console.log("Game started!");
+    navigate("/game");
   };
 
   return (
