@@ -34,7 +34,7 @@ const Game = () => {
             </Card>
 
             {/* Stats row */}
-            <div className="grid grid-cols-3 gap-4 h-1/3">
+            <div className="grid grid-cols-4 gap-4 h-1/3">
               {/* Timer */}
               <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20">
                 <div className="flex items-center justify-between h-full">
@@ -44,6 +44,16 @@ const Game = () => {
                       <h3 className="font-semibold">Timer</h3>
                     </div>
                     <p className="text-3xl font-bold text-primary">02:30</p>
+                  </div>
+                </div>
+              </Card>
+
+              {/* Componente futuro */}
+              <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20">
+                <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
+                  <div className="text-center space-y-2">
+                    <div className="text-2xl">📝</div>
+                    <p className="text-muted-foreground text-xs">Testo futuro</p>
                   </div>
                 </div>
               </Card>
@@ -98,15 +108,6 @@ const Game = () => {
               </div>
             </Card>
 
-            {/* Empty container for future implementation */}
-            <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20 h-1/2">
-              <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
-                <div className="text-center space-y-2">
-                  <div className="text-4xl">⚙️</div>
-                  <p className="text-muted-foreground text-sm">Componente futuro</p>
-                </div>
-              </div>
-            </Card>
           </div>
         </div>
       </div>
