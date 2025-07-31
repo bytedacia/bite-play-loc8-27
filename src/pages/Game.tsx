@@ -95,8 +95,10 @@ const Game = () => {
                   <p className="text-muted-foreground text-xs">10%</p>
                 </div>
                 {/* Progress bar */}
-                <div className="w-full bg-muted/30 rounded-full h-2">
-                  <div className="bg-gradient-to-r from-primary to-brand-secondary h-2 rounded-full transition-all duration-500 ease-out" style={{width: '10%'}}></div>
+                <div className="w-full bg-muted/30 rounded-full h-2 overflow-hidden">
+                  <div className="bg-gradient-to-r from-primary via-brand-secondary to-primary h-2 rounded-full transition-all duration-500 ease-out relative animate-pulse" style={{width: '10%'}}>
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-[shimmer_2s_ease-in-out_infinite] rounded-full"></div>
+                  </div>
                 </div>
               </div>
             </Card>
