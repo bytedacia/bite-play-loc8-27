@@ -5,11 +5,9 @@ import { ArrowLeft, Timer, Target, RotateCcw, Trophy } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import FoodGuessMode from "@/components/game/FoodGuessMode";
 
 const Game = () => {
   const isMobile = useIsMobile();
-  const [showFoodGuess, setShowFoodGuess] = useState(false);
   const [currentRound, setCurrentRound] = useState(1);
   const [gameCompleted, setGameCompleted] = useState(false);
   const [roundResults, setRoundResults] = useState([
@@ -41,10 +39,6 @@ const Game = () => {
 
   const totalScore = roundResults.reduce((total, round) => total + round.points, 0);
 
-  if (showFoodGuess) {
-    return <FoodGuessMode onBack={() => setShowFoodGuess(false)} />;
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-primary/5 p-2 sm:p-4">
       <div className="max-w-7xl mx-auto">
@@ -72,13 +66,8 @@ const Game = () => {
             <Card className={`${isMobile ? "h-64 sm:h-80" : "h-2/3"} p-2 sm:p-4 bg-gradient-to-br from-card to-card/80 border-primary/20`}>
               <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
                 <div className="text-center space-y-2">
-                  <Button 
-                    onClick={() => setShowFoodGuess(true)}
-                    className="bg-gradient-to-r from-brand-primary to-brand-secondary hover:from-brand-primary/90 hover:to-brand-secondary/90 text-black font-bold"
-                  >
-                    🍽️ Avvia Food Guess Mode
-                  </Button>
-                  <p className="text-muted-foreground text-xs sm:text-sm">Clicca per iniziare il gioco</p>
+                  <div className="text-4xl sm:text-6xl">🗺️</div>
+                  <p className="text-muted-foreground text-xs sm:text-sm">Mappa del gioco</p>
                 </div>
               </div>
             </Card>
