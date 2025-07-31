@@ -83,7 +83,6 @@ const Social = () => {
                   <div className="text-sm text-brand-primary font-bold bg-gradient-to-r from-brand-primary/20 to-brand-primary/10 px-6 py-3 rounded-full border border-brand-primary/30">
                     @loc8abite_official
                   </div>
-                  <div className="text-white/50 text-sm font-medium">125K followers</div>
                 </div>
               </div>
             </a>
@@ -112,7 +111,6 @@ const Social = () => {
                   <div className="text-sm text-red-500 font-bold bg-gradient-to-r from-red-500/20 to-red-500/10 px-6 py-3 rounded-full border border-red-500/30">
                     Loc8abite Gaming
                   </div>
-                  <div className="text-white/50 text-sm font-medium">89K subscribers</div>
                 </div>
               </div>
             </a>
@@ -143,7 +141,6 @@ const Social = () => {
                   <div className="text-sm text-indigo-500 font-bold bg-gradient-to-r from-indigo-500/20 to-indigo-500/10 px-6 py-3 rounded-full border border-indigo-500/30">
                     discord.gg/loc8abite
                   </div>
-                  <div className="text-white/50 text-sm font-medium">12K members</div>
                 </div>
               </div>
             </a>
@@ -159,7 +156,6 @@ const Social = () => {
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-8">
                   <Twitter className="h-16 w-16 text-white group-hover:scale-125 transition-all duration-500" />
-                  <div className="text-white/50 text-sm font-medium">45K followers</div>
                 </div>
                 <h3 className="text-3xl font-bold mb-4">X (Twitter)</h3>
                 <p className="text-white/70 mb-8 leading-relaxed text-lg">
@@ -182,7 +178,6 @@ const Social = () => {
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-8">
                   <Facebook className="h-16 w-16 text-blue-500 group-hover:scale-125 transition-all duration-500" />
-                  <div className="text-white/50 text-sm font-medium">78K followers</div>
                 </div>
                 <h3 className="text-3xl font-bold mb-4 group-hover:text-blue-500 transition-colors duration-300">Facebook</h3>
                 <p className="text-white/70 mb-8 leading-relaxed text-lg">
@@ -262,7 +257,7 @@ const Social = () => {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
                   <div className="bg-gradient-to-r from-brand-primary to-brand-secondary px-8 py-4 rounded-full text-white font-bold text-lg border border-brand-primary/30 backdrop-blur-sm">
-                    🏆 +200K Community Members
+                    🏆 Community Globale
                   </div>
                   <div className="bg-gradient-to-r from-white/10 to-white/5 px-8 py-4 rounded-full text-white font-bold text-lg border border-white/20 backdrop-blur-sm">
                     🌍 Available Worldwide
