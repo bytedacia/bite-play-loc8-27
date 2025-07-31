@@ -9,16 +9,16 @@ const Game = () => {
   const [currentRound, setCurrentRound] = useState(1);
   const [gameCompleted, setGameCompleted] = useState(false);
   const [roundResults, setRoundResults] = useState([
-    { round: 1, points: 850, time: "2:30", attempts: 2 },
-    { round: 2, points: 920, time: "1:45", attempts: 1 },
-    { round: 3, points: 650, time: "3:20", attempts: 3 },
-    { round: 4, points: 780, time: "2:10", attempts: 2 },
-    { round: 5, points: 950, time: "1:30", attempts: 1 },
-    { round: 6, points: 720, time: "2:50", attempts: 3 },
-    { round: 7, points: 890, time: "1:55", attempts: 1 },
-    { round: 8, points: 630, time: "3:45", attempts: 3 },
-    { round: 9, points: 810, time: "2:25", attempts: 2 },
-    { round: 10, points: 900, time: "1:40", attempts: 1 }
+    { round: 1, points: 850, time: "2:30", attempts: 2, food: "Pizza Margherita", image: "🍕", correctLocation: "Napoli, Italia", guessedLocation: "Roma, Italia", distance: "225 km" },
+    { round: 2, points: 920, time: "1:45", attempts: 1, food: "Sushi", image: "🍣", correctLocation: "Tokyo, Giappone", guessedLocation: "Osaka, Giappone", distance: "515 km" },
+    { round: 3, points: 650, time: "3:20", attempts: 3, food: "Croissant", image: "🥐", correctLocation: "Parigi, Francia", guessedLocation: "Londra, UK", distance: "344 km" },
+    { round: 4, points: 780, time: "2:10", attempts: 2, food: "Tacos", image: "🌮", correctLocation: "Città del Messico", guessedLocation: "Los Angeles, USA", distance: "2445 km" },
+    { round: 5, points: 950, time: "1:30", attempts: 1, food: "Paella", image: "🥘", correctLocation: "Valencia, Spagna", guessedLocation: "Barcelona, Spagna", distance: "350 km" },
+    { round: 6, points: 720, time: "2:50", attempts: 3, food: "Pad Thai", image: "🍜", correctLocation: "Bangkok, Tailandia", guessedLocation: "Singapore", distance: "1420 km" },
+    { round: 7, points: 890, time: "1:55", attempts: 1, food: "Hamburger", image: "🍔", correctLocation: "New York, USA", guessedLocation: "Chicago, USA", distance: "1270 km" },
+    { round: 8, points: 630, time: "3:45", attempts: 3, food: "Ramen", image: "🍲", correctLocation: "Tokyo, Giappone", guessedLocation: "Seoul, Korea", distance: "1160 km" },
+    { round: 9, points: 810, time: "2:25", attempts: 2, food: "Fish & Chips", image: "🐟", correctLocation: "Londra, UK", guessedLocation: "Dublino, Irlanda", distance: "463 km" },
+    { round: 10, points: 900, time: "1:40", attempts: 1, food: "Gelato", image: "🍨", correctLocation: "Roma, Italia", guessedLocation: "Milano, Italia", distance: "575 km" }
   ]);
 
   // Simula completamento dopo 10 round
@@ -175,7 +175,7 @@ const Game = () => {
                     Vedi Classifica
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-md mx-auto bg-gradient-to-br from-card to-card/80 border-primary/20">
+                <DialogContent className="max-w-4xl mx-auto bg-gradient-to-br from-card to-card/80 border-primary/20 max-h-[90vh] overflow-hidden">
                   <DialogHeader>
                     <DialogTitle className="text-center text-2xl font-bold bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-accent bg-clip-text text-transparent">
                       🏆 CLASSIFICA FINALE
@@ -191,20 +191,52 @@ const Game = () => {
                       </div>
                     </Card>
                     
-                    {/* Lista round */}
-                    <div className="max-h-60 overflow-y-auto space-y-2">
+                    {/* Lista round dettagliata */}
+                    <div className="max-h-96 overflow-y-auto space-y-3 pr-2">
                       {roundResults.map((result, index) => (
-                        <Card key={result.round} className="p-3 bg-gradient-to-r from-card/50 to-card/30 border-primary/10">
-                          <div className="flex justify-between items-center">
-                            <div className="flex items-center gap-2">
-                              <div className="w-6 h-6 bg-gradient-to-r from-brand-primary to-brand-secondary rounded-full flex items-center justify-center text-xs font-bold text-black">
-                                {result.round}
+                        <Card key={result.round} className="p-4 bg-gradient-to-r from-card/50 to-card/30 border-primary/10 hover:border-primary/30 transition-all">
+                          <div className="grid grid-cols-12 gap-4 items-center">
+                            {/* Round number e cibo */}
+                            <div className="col-span-3">
+                              <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 bg-gradient-to-r from-brand-primary to-brand-secondary rounded-full flex items-center justify-center text-sm font-bold text-black">
+                                  {result.round}
+                                </div>
+                                <div>
+                                  <div className="text-2xl">{result.image}</div>
+                                  <div className="text-xs font-semibold text-foreground">{result.food}</div>
+                                </div>
                               </div>
-                              <span className="font-semibold">{result.points} pt</span>
                             </div>
-                            <div className="text-right text-xs text-muted-foreground">
-                              <div>⏱️ {result.time}</div>
-                              <div>🎯 {result.attempts} tent.</div>
+                            
+                            {/* Punteggio e stats */}
+                            <div className="col-span-2 text-center">
+                              <div className="text-lg font-bold text-brand-primary">{result.points}</div>
+                              <div className="text-xs text-muted-foreground">punti</div>
+                            </div>
+                            
+                            {/* Tempo e tentativi */}
+                            <div className="col-span-2 text-center">
+                              <div className="text-sm">⏱️ {result.time}</div>
+                              <div className="text-sm">🎯 {result.attempts} tent.</div>
+                            </div>
+                            
+                            {/* Posizioni */}
+                            <div className="col-span-5">
+                              <div className="space-y-1">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">✓ CORRETTO</span>
+                                  <span className="text-xs font-medium">{result.correctLocation}</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded-full">✗ LA TUA</span>
+                                  <span className="text-xs font-medium">{result.guessedLocation}</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-1 rounded-full">📏 DISTANZA</span>
+                                  <span className="text-xs font-medium">{result.distance}</span>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </Card>
