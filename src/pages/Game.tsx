@@ -9,16 +9,16 @@ const Game = () => {
   const [currentRound, setCurrentRound] = useState(1);
   const [gameCompleted, setGameCompleted] = useState(false);
   const [roundResults, setRoundResults] = useState([
-    { round: 1, points: 850, time: "2:30", attempts: 2, food: "Pizza Margherita", image: "/api/placeholder/60/60", correctLocation: "Napoli, Italia", guessedLocation: "Roma, Italia", distance: "225 km" },
-    { round: 2, points: 920, time: "1:45", attempts: 1, food: "Sushi", image: "/api/placeholder/60/60", correctLocation: "Tokyo, Giappone", guessedLocation: "Osaka, Giappone", distance: "515 km" },
-    { round: 3, points: 650, time: "3:20", attempts: 3, food: "Croissant", image: "/api/placeholder/60/60", correctLocation: "Parigi, Francia", guessedLocation: "Londra, UK", distance: "344 km" },
-    { round: 4, points: 780, time: "2:10", attempts: 2, food: "Tacos", image: "/api/placeholder/60/60", correctLocation: "Città del Messico", guessedLocation: "Los Angeles, USA", distance: "2445 km" },
-    { round: 5, points: 950, time: "1:30", attempts: 1, food: "Paella", image: "/api/placeholder/60/60", correctLocation: "Valencia, Spagna", guessedLocation: "Barcelona, Spagna", distance: "350 km" },
-    { round: 6, points: 720, time: "2:50", attempts: 3, food: "Pad Thai", image: "/api/placeholder/60/60", correctLocation: "Bangkok, Tailandia", guessedLocation: "Singapore", distance: "1420 km" },
-    { round: 7, points: 890, time: "1:55", attempts: 1, food: "Hamburger", image: "/api/placeholder/60/60", correctLocation: "New York, USA", guessedLocation: "Chicago, USA", distance: "1270 km" },
-    { round: 8, points: 630, time: "3:45", attempts: 3, food: "Ramen", image: "/api/placeholder/60/60", correctLocation: "Tokyo, Giappone", guessedLocation: "Seoul, Korea", distance: "1160 km" },
-    { round: 9, points: 810, time: "2:25", attempts: 2, food: "Fish & Chips", image: "/api/placeholder/60/60", correctLocation: "Londra, UK", guessedLocation: "Dublino, Irlanda", distance: "463 km" },
-    { round: 10, points: 900, time: "1:40", attempts: 1, food: "Gelato", image: "/api/placeholder/60/60", correctLocation: "Roma, Italia", guessedLocation: "Milano, Italia", distance: "575 km" }
+    { round: 1, points: 850, time: "2:30", attempts: 2, food: "Pizza Margherita", image: "/api/placeholder/60/60", correctLocation: "Napoli, Italia", correctCountry: "🇮🇹 Italia", guessedAttempts: ["Roma, Italia", "Napoli, Italia"] },
+    { round: 2, points: 920, time: "1:45", attempts: 1, food: "Sushi", image: "/api/placeholder/60/60", correctLocation: "Tokyo, Giappone", correctCountry: "🇯🇵 Giappone", guessedAttempts: ["Tokyo, Giappone"] },
+    { round: 3, points: 650, time: "3:20", attempts: 3, food: "Croissant", image: "/api/placeholder/60/60", correctLocation: "Parigi, Francia", correctCountry: "🇫🇷 Francia", guessedAttempts: ["Londra, UK", "Berlino, Germania", "Parigi, Francia"] },
+    { round: 4, points: 780, time: "2:10", attempts: 2, food: "Tacos", image: "/api/placeholder/60/60", correctLocation: "Città del Messico", correctCountry: "🇲🇽 Messico", guessedAttempts: ["Los Angeles, USA", "Città del Messico"] },
+    { round: 5, points: 950, time: "1:30", attempts: 1, food: "Paella", image: "/api/placeholder/60/60", correctLocation: "Valencia, Spagna", correctCountry: "🇪🇸 Spagna", guessedAttempts: ["Valencia, Spagna"] },
+    { round: 6, points: 720, time: "2:50", attempts: 3, food: "Pad Thai", image: "/api/placeholder/60/60", correctLocation: "Bangkok, Tailandia", correctCountry: "🇹🇭 Tailandia", guessedAttempts: ["Singapore", "Manila, Filippine", "Bangkok, Tailandia"] },
+    { round: 7, points: 890, time: "1:55", attempts: 1, food: "Hamburger", image: "/api/placeholder/60/60", correctLocation: "New York, USA", correctCountry: "🇺🇸 USA", guessedAttempts: ["New York, USA"] },
+    { round: 8, points: 630, time: "3:45", attempts: 3, food: "Ramen", image: "/api/placeholder/60/60", correctLocation: "Tokyo, Giappone", correctCountry: "🇯🇵 Giappone", guessedAttempts: ["Seoul, Korea", "Pechino, Cina", "Tokyo, Giappone"] },
+    { round: 9, points: 810, time: "2:25", attempts: 2, food: "Fish & Chips", image: "/api/placeholder/60/60", correctLocation: "Londra, UK", correctCountry: "🇬🇧 Regno Unito", guessedAttempts: ["Dublino, Irlanda", "Londra, UK"] },
+    { round: 10, points: 900, time: "1:40", attempts: 1, food: "Gelato", image: "/api/placeholder/60/60", correctLocation: "Roma, Italia", correctCountry: "🇮🇹 Italia", guessedAttempts: ["Roma, Italia"] }
   ]);
 
   // Simula completamento dopo 10 round
@@ -225,20 +225,32 @@ const Game = () => {
                               <div className="text-sm">🎯 {result.attempts} tent.</div>
                             </div>
                             
-                            {/* Posizioni */}
+                            {/* Posizioni e tentativi */}
                             <div className="col-span-5">
-                              <div className="space-y-1">
+                              <div className="space-y-2">
                                 <div className="flex items-center gap-2">
                                   <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">✓ CORRETTO</span>
                                   <span className="text-xs font-medium">{result.correctLocation}</span>
+                                  <span className="text-xs">{result.correctCountry}</span>
                                 </div>
-                                <div className="flex items-center gap-2">
-                                  <span className="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded-full">✗ LA TUA</span>
-                                  <span className="text-xs font-medium">{result.guessedLocation}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-1 rounded-full">📏 DISTANZA</span>
-                                  <span className="text-xs font-medium">{result.distance}</span>
+                                
+                                <div className="space-y-1">
+                                  <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-1 rounded-full">🎯 I TUOI TENTATIVI</span>
+                                  {result.guessedAttempts.map((attempt, attemptIndex) => (
+                                    <div key={attemptIndex} className="flex items-center gap-2 ml-4">
+                                      <span className={`text-xs px-2 py-1 rounded-full ${
+                                        attemptIndex === result.guessedAttempts.length - 1 && attempt === result.correctLocation
+                                          ? 'bg-green-500/20 text-green-400'
+                                          : 'bg-red-500/20 text-red-400'
+                                      }`}>
+                                        {attemptIndex + 1}°
+                                      </span>
+                                      <span className="text-xs font-medium">{attempt}</span>
+                                      {attemptIndex === result.guessedAttempts.length - 1 && attempt === result.correctLocation && (
+                                        <span className="text-xs text-green-400">✓</span>
+                                      )}
+                                    </div>
+                                  ))}
                                 </div>
                               </div>
                             </div>
