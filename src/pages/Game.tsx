@@ -88,10 +88,15 @@ const Game = () => {
           {/* Right sidebar with photo and name */}
           <div className="lg:col-span-1 space-y-4">
             {/* Round indicator */}
-            <Card className="p-2 bg-gradient-to-br from-card to-card/80 border-primary/20 h-12">
-              <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
-                <div className="text-center">
+            <Card className="p-3 bg-gradient-to-br from-card to-card/80 border-primary/20 h-14">
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
                   <p className="text-muted-foreground text-sm font-semibold">Round 1/10</p>
+                  <p className="text-muted-foreground text-xs">10%</p>
+                </div>
+                {/* Progress bar */}
+                <div className="w-full bg-muted/30 rounded-full h-2">
+                  <div className="bg-gradient-to-r from-primary to-brand-secondary h-2 rounded-full transition-all duration-500 ease-out" style={{width: '10%'}}></div>
                 </div>
               </div>
             </Card>
