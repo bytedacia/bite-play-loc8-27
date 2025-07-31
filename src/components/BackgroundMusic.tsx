@@ -1,37 +1,27 @@
 import { useEffect, useRef, useState } from "react";
 
 const BackgroundMusic = () => {
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
     if (hasStarted) return;
 
-    const attemptAutoplay = async () => {
-      if (audioRef.current && !hasStarted) {
+    const attemptAutoplay = () => {
+      if (iframeRef.current && !hasStarted) {
         setHasStarted(true);
-        audioRef.current.volume = 0.3;
-        try {
-          await audioRef.current.play();
-          console.log("Background music started");
-        } catch (error) {
-          console.log("Autoplay blocked, waiting for user interaction");
-        }
+        const baseUrl = "https://www.youtube.com/embed/LgMvaRwbEOE?autoplay=1&loop=1&playlist=LgMvaRwbEOE&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1";
+        iframeRef.current.src = baseUrl;
+        console.log("Background music started");
       }
     };
 
     const timer = setTimeout(attemptAutoplay, 500);
 
-    const handleInteraction = async () => {
-      if (!hasStarted && audioRef.current) {
-        setHasStarted(true);
-        audioRef.current.volume = 0.3;
-        try {
-          await audioRef.current.play();
-          console.log("Background music started after user interaction");
-        } catch (error) {
-          console.log("Failed to play audio:", error);
-        }
+    const handleInteraction = () => {
+      if (!hasStarted) {
+        attemptAutoplay();
+        console.log("Background music started after user interaction");
       }
       document.removeEventListener('click', handleInteraction);
       document.removeEventListener('touchstart', handleInteraction);
@@ -52,15 +42,21 @@ const BackgroundMusic = () => {
 
   return (
     <>
-      <audio
-        ref={audioRef}
-        loop
-        preload="auto"
-        style={{ display: 'none' }}
-      >
-        <source src="https://www.soundjay.com/misc/sounds/magic-chime-02.mp3" type="audio/mpeg" />
-        <source src="https://file-examples.com/storage/fe68c065b85bfe26b03f5de/2017/11/file_example_MP3_700KB.mp3" type="audio/mpeg" />
-      </audio>
+      <iframe
+        ref={iframeRef}
+        style={{ 
+          position: 'absolute', 
+          top: '-9999px', 
+          left: '-9999px', 
+          width: '1px', 
+          height: '1px',
+          border: 'none',
+          opacity: 0,
+          visibility: 'hidden'
+        }}
+        title="Background Music"
+        allow="autoplay; encrypted-media"
+      />
     </>
   );
 };
