@@ -87,6 +87,15 @@ const Game = () => {
 
           {/* Right sidebar with photo and name */}
           <div className="lg:col-span-1 space-y-4">
+            {/* Round indicator */}
+            <Card className="p-2 bg-gradient-to-br from-card to-card/80 border-primary/20 h-12">
+              <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
+                <div className="text-center">
+                  <p className="text-muted-foreground text-sm font-semibold">Round 1/10</p>
+                </div>
+              </div>
+            </Card>
+
             {/* Photo container */}
             <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20 h-1/2">
               <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
@@ -107,7 +116,7 @@ const Game = () => {
             </Card>
 
             {/* Compass container */}
-            <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20 h-1/3">
+            <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20 h-1/4">
               <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
                 <div className="text-center space-y-2">
                   <div className="text-4xl">🧭</div>
