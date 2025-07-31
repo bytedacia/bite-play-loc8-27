@@ -88,18 +88,23 @@ const Game = () => {
               </div>
             </Card>
 
-            {/* Name input */}
-            <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20 h-1/3">
-              <div className="space-y-3">
-                <h3 className="font-semibold text-center">Indovina il nome</h3>
-                <input 
-                  type="text" 
-                  placeholder="Scrivi qui la tua risposta..."
-                  className="w-full p-3 border border-primary/20 rounded-lg bg-background/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
-                />
-                <Button className="w-full bg-brand-primary hover:bg-brand-primary/90 text-black font-semibold">
-                  Conferma
-                </Button>
+            {/* Compass container */}
+            <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20 h-1/2">
+              <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
+                <div className="text-center space-y-2">
+                  <div className="text-4xl">🧭</div>
+                  <p className="text-muted-foreground text-sm">Bussola 3D</p>
+                </div>
+              </div>
+            </Card>
+
+            {/* Empty container for future implementation */}
+            <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20 h-1/2">
+              <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
+                <div className="text-center space-y-2">
+                  <div className="text-4xl">⚙️</div>
+                  <p className="text-muted-foreground text-sm">Componente futuro</p>
+                </div>
               </div>
             </Card>
           </div>
