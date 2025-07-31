@@ -24,7 +24,7 @@ const Game = () => {
           {/* Main map area */}
           <div className="lg:col-span-3 space-y-4">
             {/* Map container */}
-            <Card className="h-2/3 p-4 bg-gradient-to-br from-card to-card/80 border-primary/20">
+            <Card className="h-1/2 p-4 bg-gradient-to-br from-card to-card/80 border-primary/20">
               <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
                 <div className="text-center space-y-2">
                   <div className="text-6xl">🗺️</div>
@@ -34,7 +34,7 @@ const Game = () => {
             </Card>
 
             {/* Stats row */}
-            <div className="grid grid-cols-3 gap-4 h-1/3">
+            <div className="grid grid-cols-4 gap-4 h-1/2">
               {/* Timer */}
               <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20">
                 <div className="flex items-center justify-between h-full">
@@ -73,37 +73,27 @@ const Game = () => {
                   </div>
                 </div>
               </Card>
+
+              {/* Empty container for future implementation */}
+              <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20">
+                <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
+                  <div className="text-center space-y-2">
+                    <div className="text-4xl">⚙️</div>
+                    <p className="text-muted-foreground text-sm">Componente futuro</p>
+                  </div>
+                </div>
+              </Card>
             </div>
           </div>
 
-          {/* Right sidebar with photo and name */}
-          <div className="lg:col-span-1 space-y-4">
-            {/* Photo container */}
-            <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20 h-2/3">
-              <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
-                <div className="text-center space-y-2">
-                  <div className="text-6xl">📸</div>
-                  <p className="text-muted-foreground">Foto del cibo</p>
-                </div>
-              </div>
-            </Card>
-
+          {/* Right sidebar with only compass */}
+          <div className="lg:col-span-1">
             {/* Compass container */}
-            <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20 h-1/2">
+            <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20 h-full">
               <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
                 <div className="text-center space-y-2">
                   <div className="text-4xl">🧭</div>
                   <p className="text-muted-foreground text-sm">Bussola 3D</p>
-                </div>
-              </div>
-            </Card>
-
-            {/* Empty container for future implementation */}
-            <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20 h-1/2">
-              <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
-                <div className="text-center space-y-2">
-                  <div className="text-4xl">⚙️</div>
-                  <p className="text-muted-foreground text-sm">Componente futuro</p>
                 </div>
               </div>
             </Card>
