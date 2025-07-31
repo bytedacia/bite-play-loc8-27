@@ -160,4 +160,15 @@ All colors MUST be HSL.
       width: 100vw !important;
     }
   }
+  }
+
+  /* Loading shimmer animation */
+  @keyframes slide {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(300%);
+    }
+  }
 }
