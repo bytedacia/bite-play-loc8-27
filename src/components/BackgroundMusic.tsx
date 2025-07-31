@@ -58,9 +58,8 @@ const BackgroundMusic = () => {
         preload="auto"
         style={{ display: 'none' }}
       >
-        <source src="https://www.bensound.com/bensound-music/bensound-relaxing.mp3" type="audio/mpeg" />
-        <source src="https://www.bensound.com/bensound-music/bensound-summer.mp3" type="audio/mpeg" />
-        <source src="https://archive.org/download/piano-chillout-relaxing-music/piano-chillout-relaxing-music.mp3" type="audio/mpeg" />
+        <source src="https://www.soundjay.com/misc/sounds/magic-chime-02.mp3" type="audio/mpeg" />
+        <source src="https://file-examples.com/storage/fe68c065b85bfe26b03f5de/2017/11/file_example_MP3_700KB.mp3" type="audio/mpeg" />
       </audio>
     </>
   );
