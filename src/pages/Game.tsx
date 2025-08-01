@@ -4,12 +4,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { ArrowLeft, Timer, Target, RotateCcw, Trophy } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+// Hook configurabile che funziona anche con JavaScript
 import { useGameConfig } from "@/hooks/useGameConfig";
+// Tipi TypeScript (opzionali)
 import { GameConfig } from "@/types/game";
 
-// Interfaccia per props configurabili (opzionale)
+// Interfaccia per props configurabili (opzionale per TypeScript)
 interface GamePageProps {
-  customConfig?: Partial<GameConfig>;
+  customConfig?: any; // Accetta sia TypeScript che JavaScript
 }
 
 const Game = ({ customConfig }: GamePageProps = {}) => {
