@@ -15,6 +15,29 @@ export const defaultGameConfig = {
   showHints: true,
   enableSound: false,
   
+  // CONFIGURAZIONE MAPPA - NUOVO!
+  mapConfig: {
+    showMap: true,
+    mapComponent: null, // Il tuo componente mappa personalizzato
+    mapProps: {}, // Props per il tuo componente mappa
+    placeholderText: "Mappa del gioco",
+    placeholderIcon: "🗺️"
+  },
+  
+  // CONFIGURAZIONE COMPONENTI PERSONALIZZATI
+  components: {
+    // Mappa personalizzata
+    renderMap: null, // Funzione che ritorna JSX per la mappa
+    // Foto personalizzata
+    renderPhoto: null, // Funzione che ritorna JSX per la foto
+    // Nome cibo personalizzato
+    renderFoodName: null, // Funzione che ritorna JSX per nome cibo
+    // Bussola personalizzata
+    renderCompass: null, // Funzione che ritorna JSX per bussola
+    // Area messaggi personalizzata
+    renderMessages: null // Funzione che ritorna JSX per messaggi
+  },
+  
   // Messaggi del gioco
   messages: {
     roundComplete: "Round completato!",
@@ -34,6 +57,57 @@ export const myGameConfig = {
   gameTitle: "IL MIO FOOD GAME",
   maxRounds: 15,
   
+  // CONFIGURAZIONE MAPPA PERSONALIZZATA
+  mapConfig: {
+    showMap: true,
+    placeholderText: "Clicca sulla mappa per indovinare!",
+    placeholderIcon: "🌍"
+  },
+  
+  // COMPONENTI PERSONALIZZATI
+  components: {
+    // Mappa personalizzata - ESEMPIO con Mapbox
+    renderMap: (gameState, actions) => {
+      // Ritorna il tuo componente mappa
+      return React.createElement('div', {
+        className: "w-full h-full bg-blue-100 rounded-lg flex items-center justify-center cursor-pointer",
+        onClick: (e) => {
+          // La tua logica di click sulla mappa
+          const guess = "Milano, Italia"; // Calcola dalla posizione del click
+          actions.makeGuess(guess);
+        }
+      }, [
+        React.createElement('p', { key: 'text' }, 'La tua mappa interattiva qui!')
+      ]);
+    },
+    
+    // Foto personalizzata
+    renderPhoto: (gameState) => {
+      if (!gameState.currentFood?.image) return null;
+      
+      return React.createElement('img', {
+        src: gameState.currentFood.image,
+        alt: gameState.currentFood.name,
+        className: "w-full h-full object-cover rounded-lg shadow-lg",
+        style: { filter: 'brightness(0.9) contrast(1.1)' }
+      });
+    },
+    
+    // Nome cibo con animazione
+    renderFoodName: (gameState) => {
+      const name = gameState.currentFood?.name || "???";
+      
+      return React.createElement('div', {
+        className: "text-center animate-pulse"
+      }, [
+        React.createElement('h3', {
+          key: 'name',
+          className: "text-xl font-bold text-brand-primary"
+        }, name)
+      ]);
+    }
+  },
+  
   // I tuoi callback personalizzati
   onRoundStart: (round) => {
     console.log(`Iniziando round ${round}`);
@@ -41,10 +115,10 @@ export const myGameConfig = {
     // fetch(`/api/my-foods/${round}`)...
   },
   
-  onGuess: (guess, isCorrect) => {
-    console.log(`Tentativo: ${guess}, Corretto: ${isCorrect}`);
-    // QUI: Salva le statistiche del giocatore
-    // savePlayerStats(guess, isCorrect)...
+  onGuess: (guess, isCorrect, coordinates) => {
+    console.log(`Tentativo: ${guess}, Corretto: ${isCorrect}`, coordinates);
+    // QUI: Salva le statistiche del giocatore + coordinate
+    // savePlayerStats(guess, isCorrect, coordinates)...
   },
   
   onGameComplete: (results) => {

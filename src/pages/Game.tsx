@@ -71,13 +71,26 @@ const Game = ({ customConfig }: GamePageProps = {}) => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[calc(100vh-200px)]">
           {/* Main map area */}
           <div className="lg:col-span-3 space-y-4">
-            {/* Map container */}
+            {/* Map container - CONFIGURABILE */}
             <Card className="h-2/3 p-4 bg-gradient-to-br from-card to-card/80 border-primary/20">
-              <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
-                <div className="text-center space-y-2">
-                  <div className="text-6xl">🗺️</div>
-                  <p className="text-muted-foreground">Mappa del gioco</p>
-                </div>
+              <div className="w-full h-full">
+                {/* Renderizza mappa personalizzata se configurata */}
+                {config.components?.renderMap ? (
+                  config.components.renderMap(gameState, actions)
+                ) : (
+                  /* Placeholder di default */
+                  <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
+                    <div className="text-center space-y-2">
+                      <div className="text-6xl">{config.mapConfig?.placeholderIcon || "🗺️"}</div>
+                      <p className="text-muted-foreground">
+                        {config.mapConfig?.placeholderText || "Mappa del gioco"}
+                      </p>
+                      <p className="text-xs text-muted-foreground/70">
+                        Configura 'renderMap' per la tua mappa
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             </Card>
 
@@ -123,12 +136,21 @@ const Game = ({ customConfig }: GamePageProps = {}) => {
               </Card>
             </div>
 
-            {/* Componente futuro - rettangolo lungo */}
+            {/* Componente futuro - rettangolo lungo - CONFIGURABILE */}
             <Card className="p-3 bg-gradient-to-br from-card to-card/80 border-primary/20 h-16">
-              <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
-                <div className="text-center">
-                  <p className="text-muted-foreground text-sm">Componente futuro per testo</p>
-                </div>
+              <div className="w-full h-full flex items-center justify-center">
+                {/* Renderizza messaggi personalizzati se configurati */}
+                {config.components?.renderMessages ? (
+                  config.components.renderMessages(gameState, actions)
+                ) : (
+                  /* Contenuto di default */
+                  <div className="text-center">
+                    <p className="text-muted-foreground text-sm">Componente futuro per testo</p>
+                    <p className="text-xs text-muted-foreground/70">
+                      Configura 'renderMessages'
+                    </p>
+                  </div>
+                )}
               </div>
             </Card>
           </div>
@@ -152,32 +174,63 @@ const Game = ({ customConfig }: GamePageProps = {}) => {
               </div>
             </Card>
 
-            {/* Photo container */}
+            {/* Photo container - CONFIGURABILE */}
             <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20 h-1/2">
-              <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
-                <div className="text-center space-y-2">
-                  <div className="text-6xl">📸</div>
-                  <p className="text-muted-foreground">Foto del cibo</p>
-                </div>
+              <div className="w-full h-full">
+                {/* Renderizza foto personalizzata se configurata */}
+                {config.components?.renderPhoto ? (
+                  config.components.renderPhoto(gameState)
+                ) : (
+                  /* Placeholder di default */
+                  <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
+                    <div className="text-center space-y-2">
+                      <div className="text-6xl">📸</div>
+                      <p className="text-muted-foreground">Foto del cibo</p>
+                      <p className="text-xs text-muted-foreground/70">
+                        Configura 'renderPhoto' per personalizzare
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             </Card>
 
-            {/* Nome del cibo */}
+            {/* Nome del cibo - CONFIGURABILE */}
             <Card className="p-3 bg-gradient-to-br from-card to-card/80 border-primary/20 h-16">
-              <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
-                <div className="text-center">
-                  <p className="text-muted-foreground text-sm">Nome del cibo</p>
-                </div>
+              <div className="w-full h-full flex items-center justify-center">
+                {/* Renderizza nome personalizzato se configurato */}
+                {config.components?.renderFoodName ? (
+                  config.components.renderFoodName(gameState)
+                ) : (
+                  /* Contenuto di default */
+                  <div className="text-center">
+                    <p className="text-muted-foreground text-sm">Nome del cibo</p>
+                    <p className="text-xs text-muted-foreground/70">
+                      Configura 'renderFoodName'
+                    </p>
+                  </div>
+                )}
               </div>
             </Card>
 
-            {/* Compass container */}
+            {/* Compass container - CONFIGURABILE */}
             <Card className="p-4 bg-gradient-to-br from-card to-card/80 border-primary/20 h-1/4">
-              <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
-                <div className="text-center space-y-2">
-                  <div className="text-4xl">🧭</div>
-                  <p className="text-muted-foreground text-sm">Bussola 3D</p>
-                </div>
+              <div className="w-full h-full">
+                {/* Renderizza bussola personalizzata se configurata */}
+                {config.components?.renderCompass ? (
+                  config.components.renderCompass(gameState)
+                ) : (
+                  /* Placeholder di default */
+                  <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
+                    <div className="text-center space-y-2">
+                      <div className="text-4xl">🧭</div>
+                      <p className="text-muted-foreground text-sm">Bussola 3D</p>
+                      <p className="text-xs text-muted-foreground/70">
+                        Configura 'renderCompass'
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             </Card>
 

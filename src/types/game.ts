@@ -36,6 +36,24 @@ export interface GameConfig {
   showHints: boolean;
   enableSound: boolean;
   
+  // CONFIGURAZIONE MAPPA - NUOVO!
+  mapConfig?: {
+    showMap: boolean;
+    mapComponent?: any;
+    mapProps?: any;
+    placeholderText: string;
+    placeholderIcon: string;
+  };
+  
+  // CONFIGURAZIONE COMPONENTI PERSONALIZZATI
+  components?: {
+    renderMap?: (gameState: any, actions: any) => any;
+    renderPhoto?: (gameState: any) => any;
+    renderFoodName?: (gameState: any) => any;
+    renderCompass?: (gameState: any) => any;
+    renderMessages?: (gameState: any, actions: any) => any;
+  };
+  
   // Callback personalizzabili
   onRoundStart?: (round: number) => void;
   onRoundEnd?: (result: GameRound) => void;
