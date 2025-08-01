@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useGameConfig } from "@/hooks/useGameConfig";
 // Tipi TypeScript (opzionali)
 import { GameConfig } from "@/types/game";
+import SpotifyMusicPlayer from "@/components/SpotifyMusicPlayer";
 
 // Interfaccia per props configurabili (opzionale per TypeScript)
 interface GamePageProps {
@@ -53,7 +54,9 @@ const Game = ({ customConfig }: GamePageProps = {}) => {
   const totalScore = roundResults.reduce((total, round) => total + round.points, 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-primary/5 p-4">
+    <>
+      <SpotifyMusicPlayer />
+      <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-primary/5 p-4">
       <div className="max-w-7xl mx-auto">
         {/* Header with back button */}
         <div className="mb-6">
@@ -360,7 +363,8 @@ const Game = ({ customConfig }: GamePageProps = {}) => {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 
