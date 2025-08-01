@@ -15,13 +15,26 @@ export const defaultGameConfig = {
   showHints: true,
   enableSound: false,
   
-  // CONFIGURAZIONE MAPPA - NUOVO!
+  // CONFIGURAZIONE MAPPA - COMPLETA!
   mapConfig: {
     showMap: true,
     mapComponent: null, // Il tuo componente mappa personalizzato
     mapProps: {}, // Props per il tuo componente mappa
     placeholderText: "Mappa del gioco",
-    placeholderIcon: "🗺️"
+    placeholderIcon: "🗺️",
+    
+    // FUNZIONI MAPPA CONFIGURABILI
+    onMapClick: null, // (coordinates, locationName) => void
+    onMapReady: null, // (mapInstance) => void
+    calculateDistance: null, // (guess, correct) => number (in km)
+    reverseGeocode: null, // (lat, lng) => Promise<string>
+    forwardGeocode: null, // (locationName) => Promise<{lat, lng}>
+    calculateScoreFromDistance: null, // (distance, maxDistance) => number
+    formatDistance: null, // (distance) => string
+    getMapCenter: null, // (round) => {lat, lng}
+    getMapZoom: null, // (round) => number
+    restrictMapBounds: false,
+    mapBounds: null // {north, south, east, west}
   },
   
   // CONFIGURAZIONE COMPONENTI PERSONALIZZATI
@@ -57,11 +70,126 @@ export const myGameConfig = {
   gameTitle: "IL MIO FOOD GAME",
   maxRounds: 15,
   
-  // CONFIGURAZIONE MAPPA PERSONALIZZATA
+  // CONFIGURAZIONE MAPPA PERSONALIZZATA CON FUNZIONI
   mapConfig: {
     showMap: true,
     placeholderText: "Clicca sulla mappa per indovinare!",
-    placeholderIcon: "🌍"
+    placeholderIcon: "🌍",
+    
+    // FUNZIONI MAPPA PERSONALIZZATE
+    onMapClick: (coordinates, locationName) => {
+      console.log(`Click sulla mappa: ${locationName} (${coordinates.lat}, ${coordinates.lng})`);
+      // La tua logica personalizzata per i click
+    },
+    
+    onMapReady: (mapInstance) => {
+      console.log("Mappa pronta:", mapInstance);
+      // Configura la mappa quando è pronta
+      // Aggiungi marker, stili, layer personalizzati, etc.
+    },
+    
+    // Calcola distanza con formula di Haversine personalizzata
+    calculateDistance: (guess, correct) => {
+      const R = 6371; // Raggio Terra in km
+      const dLat = (correct.lat - guess.lat) * Math.PI / 180;
+      const dLng = (correct.lng - guess.lng) * Math.PI / 180;
+      const a = 
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(guess.lat * Math.PI / 180) * Math.cos(correct.lat * Math.PI / 180) *
+        Math.sin(dLng/2) * Math.sin(dLng/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c; // Distanza in km
+    },
+    
+    // Geocoding inverso personalizzato
+    reverseGeocode: async (lat, lng) => {
+      try {
+        // OPZIONE 1: Usa il tuo servizio di geocoding
+        const response = await fetch(`/api/reverse-geocode?lat=${lat}&lng=${lng}`);
+        const data = await response.json();
+        return data.locationName;
+        
+        // OPZIONE 2: Usa Mapbox Geocoding API
+        // const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxToken}`);
+        // const data = await response.json();
+        // return data.features[0]?.place_name || "Località sconosciuta";
+        
+      } catch (error) {
+        console.error("Errore geocoding:", error);
+        return "Località sconosciuta";
+      }
+    },
+    
+    // Geocoding diretto personalizzato
+    forwardGeocode: async (locationName) => {
+      try {
+        // OPZIONE 1: Usa il tuo servizio
+        const response = await fetch(`/api/geocode?location=${encodeURIComponent(locationName)}`);
+        const data = await response.json();
+        return { lat: data.lat, lng: data.lng };
+        
+        // OPZIONE 2: Usa Mapbox
+        // const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(locationName)}.json?access_token=${mapboxToken}`);
+        // const data = await response.json();
+        // const coords = data.features[0]?.center;
+        // return { lat: coords[1], lng: coords[0] };
+        
+      } catch (error) {
+        console.error("Errore geocoding:", error);
+        return { lat: 0, lng: 0 };
+      }
+    },
+    
+    // Calcolo punteggio basato sulla distanza
+    calculateScoreFromDistance: (distance, maxDistance = 20000) => {
+      if (distance === 0) return 1000; // Perfetto
+      if (distance >= maxDistance) return 0; // Troppo lontano
+      
+      // Punteggio inversamente proporzionale alla distanza
+      const scorePercentage = Math.max(0, (maxDistance - distance) / maxDistance);
+      return Math.round(scorePercentage * 1000);
+    },
+    
+    // Formattazione distanza
+    formatDistance: (distance) => {
+      if (distance < 1) {
+        return `${Math.round(distance * 1000)}m`;
+      } else if (distance < 100) {
+        return `${distance.toFixed(1)}km`;
+      } else {
+        return `${Math.round(distance)}km`;
+      }
+    },
+    
+    // Centro mappa per round
+    getMapCenter: (round) => {
+      // Centra la mappa in base al round
+      const centers = [
+        { lat: 41.9028, lng: 12.4964 }, // Europa (Roma)
+        { lat: 35.6762, lng: 139.6503 }, // Asia (Tokyo)
+        { lat: 40.7128, lng: -74.0060 }, // America (New York)
+        { lat: -33.8688, lng: 151.2093 }, // Oceania (Sydney)
+        { lat: 30.0444, lng: 31.2357 }, // Africa (Cairo)
+      ];
+      return centers[round % centers.length] || { lat: 0, lng: 0 };
+    },
+    
+    // Zoom mappa per round
+    getMapZoom: (round) => {
+      // Zoom diverso per difficoltà crescente
+      if (round <= 3) return 4; // Zoom globale
+      if (round <= 6) return 5; // Zoom continentale
+      return 6; // Zoom regionale
+    },
+    
+    // Limiti mappa
+    restrictMapBounds: true,
+    mapBounds: {
+      north: 85,
+      south: -85,
+      east: 180,
+      west: -180
+    }
   },
   
   // COMPONENTI PERSONALIZZATI

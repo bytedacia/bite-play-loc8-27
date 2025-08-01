@@ -36,18 +36,32 @@ export interface GameConfig {
   showHints: boolean;
   enableSound: boolean;
   
-  // CONFIGURAZIONE MAPPA - NUOVO!
+  // CONFIGURAZIONE MAPPA - COMPLETA!
   mapConfig?: {
     showMap: boolean;
     mapComponent?: any;
     mapProps?: any;
     placeholderText: string;
     placeholderIcon: string;
+    
+    // FUNZIONI MAPPA CONFIGURABILI
+    onMapClick?: (coordinates: { lat: number; lng: number }, locationName?: string) => void;
+    onMapReady?: (mapInstance: any) => void;
+    onMapError?: (error: any) => void;
+    calculateDistance?: (guess: { lat: number; lng: number }, correct: { lat: number; lng: number }) => number;
+    reverseGeocode?: (lat: number, lng: number) => Promise<string>;
+    forwardGeocode?: (locationName: string) => Promise<{ lat: number; lng: number }>;
+    calculateScoreFromDistance?: (distance: number, maxDistance: number) => number;
+    formatDistance?: (distance: number) => string;
+    getMapCenter?: (round: number) => { lat: number; lng: number };
+    getMapZoom?: (round: number) => number;
+    restrictMapBounds?: boolean;
+    mapBounds?: { north: number; south: number; east: number; west: number };
   };
   
   // CONFIGURAZIONE COMPONENTI PERSONALIZZATI
   components?: {
-    renderMap?: (gameState: any, actions: any) => any;
+    renderMap?: (gameState: any, actions: any, mapConfig?: any) => any;
     renderPhoto?: (gameState: any) => any;
     renderFoodName?: (gameState: any) => any;
     renderCompass?: (gameState: any) => any;

@@ -71,12 +71,12 @@ const Game = ({ customConfig }: GamePageProps = {}) => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[calc(100vh-200px)]">
           {/* Main map area */}
           <div className="lg:col-span-3 space-y-4">
-            {/* Map container - CONFIGURABILE */}
+            {/* Map container - CONFIGURABILE CON FUNZIONI */}
             <Card className="h-2/3 p-4 bg-gradient-to-br from-card to-card/80 border-primary/20">
               <div className="w-full h-full">
                 {/* Renderizza mappa personalizzata se configurata */}
                 {config.components?.renderMap ? (
-                  config.components.renderMap(gameState, actions)
+                  config.components.renderMap(gameState, actions, config.mapConfig)
                 ) : (
                   /* Placeholder di default */
                   <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
@@ -88,6 +88,11 @@ const Game = ({ customConfig }: GamePageProps = {}) => {
                       <p className="text-xs text-muted-foreground/70">
                         Configura 'renderMap' per la tua mappa
                       </p>
+                      <div className="mt-4 p-2 bg-primary/10 rounded text-xs">
+                        <p className="font-semibold">Funzioni configurabili:</p>
+                        <p>• onMapClick • calculateDistance</p>
+                        <p>• reverseGeocode • calculateScore</p>
+                      </div>
                     </div>
                   </div>
                 )}
