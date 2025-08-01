@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 
 // Hook configurabile che funziona con JavaScript
 export const useGameConfig = (customConfig = {}) => {
