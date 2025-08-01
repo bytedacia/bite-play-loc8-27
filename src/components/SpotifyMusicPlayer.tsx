@@ -34,6 +34,17 @@ const SpotifyMusicPlayer = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const { toast } = useToast();
 
+  // Playlist predefinita
+  const playlistUrl = "https://open.spotify.com/playlist/0OEou4QJ18fRQEd8yrc2jq";
+
+  const openPlaylist = () => {
+    window.open(playlistUrl, '_blank');
+    toast({
+      title: "Playlist aperta! 🎵",
+      description: "La tua playlist è stata aperta in Spotify",
+    });
+  };
+
   const searchTracks = async () => {
     if (!searchQuery.trim()) return;
     
@@ -59,32 +70,12 @@ const SpotifyMusicPlayer = () => {
   };
 
   const playTrack = (track: Track) => {
-    if (!track.preview_url) {
-      toast({
-        title: "Anteprima non disponibile",
-        description: "Questo brano non ha un'anteprima",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    // Stop current track if playing
-    if (audioRef.current) {
-      audioRef.current.pause();
-    }
-
-    // Create new audio element
-    audioRef.current = new Audio(track.preview_url);
-    audioRef.current.volume = 0.3; // Start with lower volume
-    
-    audioRef.current.onended = () => {
-      setIsPlaying(false);
-      setCurrentTrack(null);
-    };
-
-    audioRef.current.play();
-    setCurrentTrack(track);
-    setIsPlaying(true);
+    // Apri la canzone completa su Spotify
+    window.open(track.external_urls.spotify, '_blank');
+    toast({
+      title: "Canzone aperta su Spotify! 🎵",
+      description: `${track.name} - ${track.artists.map(a => a.name).join(', ')}`,
+    });
   };
 
   const pauseTrack = () => {
@@ -105,14 +96,25 @@ const SpotifyMusicPlayer = () => {
 
   if (!isOpen) {
     return (
-      <Button 
-        onClick={() => setIsOpen(true)}
-        className="fixed top-4 right-4 z-50 bg-[#1DB954] hover:bg-[#1ed760] text-white"
-        size="sm"
-      >
-        <Music className="h-4 w-4 mr-2" />
-        🎵 Spotify
-      </Button>
+      <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
+        <Button 
+          onClick={openPlaylist}
+          className="bg-gradient-to-r from-[#1DB954] to-[#1ed760] hover:from-[#1ed760] hover:to-[#1DB954] text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          size="sm"
+        >
+          <Music className="h-4 w-4 mr-2" />
+          🎵 Playlist
+        </Button>
+        <Button 
+          onClick={() => setIsOpen(true)}
+          variant="outline"
+          className="border-[#1DB954] text-[#1DB954] hover:bg-[#1DB954] hover:text-white shadow-lg"
+          size="sm"
+        >
+          <Search className="h-4 w-4 mr-2" />
+          Cerca
+        </Button>
+      </div>
     );
   }
 
@@ -123,16 +125,25 @@ const SpotifyMusicPlayer = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Music className="h-5 w-5 text-[#1DB954]" />
-            <span className="font-bold text-[#1DB954]">Spotify Player</span>
+            <span className="font-bold text-[#1DB954]">Spotify Search</span>
           </div>
-          <Button
-            onClick={() => setIsOpen(false)}
-            variant="ghost"
-            size="sm"
-            className="text-white hover:bg-white/10"
-          >
-            <X className="h-4 w-4" />
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              onClick={openPlaylist}
+              size="sm"
+              className="bg-[#1DB954] hover:bg-[#1ed760] text-white"
+            >
+              🎵 Playlist
+            </Button>
+            <Button
+              onClick={() => setIsOpen(false)}
+              variant="ghost"
+              size="sm"
+              className="text-white hover:bg-white/10"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
 
         {/* Search */}
@@ -153,31 +164,6 @@ const SpotifyMusicPlayer = () => {
           </Button>
         </div>
 
-        {/* Current Track */}
-        {currentTrack && (
-          <div className="bg-white/10 rounded-lg p-3">
-            <div className="flex items-center gap-3">
-              <img 
-                src={currentTrack.album.images[0]?.url} 
-                alt={currentTrack.name}
-                className="w-12 h-12 rounded"
-              />
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">{currentTrack.name}</p>
-                <p className="text-xs text-white/60 truncate">
-                  {currentTrack.artists.map(a => a.name).join(', ')}
-                </p>
-              </div>
-              <Button
-                onClick={isPlaying ? pauseTrack : () => playTrack(currentTrack)}
-                size="sm"
-                className="bg-[#1DB954] hover:bg-[#1ed760]"
-              >
-                {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-              </Button>
-            </div>
-          </div>
-        )}
 
         {/* Track List */}
         <div className="max-h-60 overflow-y-auto space-y-2">
@@ -198,40 +184,14 @@ const SpotifyMusicPlayer = () => {
                   {track.artists.map(a => a.name).join(', ')}
                 </p>
               </div>
-              {track.preview_url && (
-                <Play className="h-4 w-4 text-[#1DB954] flex-shrink-0" />
-              )}
+              <Play className="h-4 w-4 text-[#1DB954] flex-shrink-0" />
             </div>
           ))}
         </div>
 
-        {/* Controls */}
-        <div className="flex items-center justify-between">
-          <Button
-            onClick={stopTrack}
-            variant="ghost"
-            size="sm"
-            className="text-white hover:bg-white/10"
-            disabled={!currentTrack}
-          >
-            Stop
-          </Button>
-          <div className="flex items-center gap-2">
-            <Volume2 className="h-4 w-4" />
-            <input 
-              type="range" 
-              min="0" 
-              max="1" 
-              step="0.1"
-              defaultValue="0.3"
-              onChange={(e) => {
-                if (audioRef.current) {
-                  audioRef.current.volume = parseFloat(e.target.value);
-                }
-              }}
-              className="w-20"
-            />
-          </div>
+        {/* Info */}
+        <div className="text-center text-xs text-white/60 border-t border-white/10 pt-3">
+          🎵 Clicca sui brani per aprirli in Spotify
         </div>
       </div>
     </Card>
