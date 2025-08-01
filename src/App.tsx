@@ -9,6 +9,7 @@ import ChiSiamo from "./pages/ChiSiamo";
 import Progetto from "./pages/Progetto";
 import Social from "./pages/Social";
 import Game from "./pages/Game";
+import MyGame from "./pages/MyGame";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/progetto" element={<Progetto />} />
           <Route path="/social" element={<Social />} />
           <Route path="/game" element={<Game />} />
+          <Route path="/my-game" element={<MyGame />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
