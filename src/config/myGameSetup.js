@@ -65,31 +65,109 @@ export const MY_GAME_CONFIG = {
     }
   },
   
-  // ========== I TUOI DATI ==========
+  // ========== I TUOI DATI (BACKEND + FRONTEND) ==========
   getFoodData: async (round) => {
-    // 🔄 SOSTITUISCI CON I TUOI DATI!
-    // Esempio: const response = await fetch(`/api/my-data/${round}`);
+    try {
+      // 🔗 OPZIONE 1: Chiamata alla tua API backend
+      const response = await fetch(`/api/my-game/round/${round}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}` // Se usi auth
+        }
+      });
+      const data = await response.json();
+      
+      return {
+        name: data.name,
+        image: data.image,
+        correctLocation: data.origin,
+        correctCountry: data.country,
+        hints: data.hints || []
+      };
+      
+    } catch (error) {
+      console.error("Errore API:", error);
+      
+      // 🔄 FALLBACK: Dati locali se API non disponibile
+      return {
+        name: "Pizza",
+        image: "/api/placeholder/400/300",
+        correctLocation: "Napoli, Italia",
+        correctCountry: "🇮🇹 Italia",
+        hints: ["È italiana", "Si mangia calda"]
+      };
+    }
+  },
+  
+  // ========== LE TUE CALLBACK (BACKEND) ==========
+  onRoundStart: async (round) => {
+    console.log(`Round ${round} iniziato`);
     
-    return {
-      name: "Il tuo elemento",
-      image: "/path/to/your/image.jpg",
-      correctLocation: "La tua località corretta",
-      correctCountry: "🏴 Il tuo paese",
-      hints: ["I tuoi suggerimenti"]
-    };
+    // 📊 Traccia inizio round nel tuo backend
+    try {
+      await fetch('/api/my-game/round-start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          round, 
+          timestamp: new Date().toISOString(),
+          playerId: localStorage.getItem('player_id')
+        })
+      });
+    } catch (error) {
+      console.error("Errore salvataggio round:", error);
+    }
   },
   
-  // ========== LE TUE CALLBACK ==========
-  onRoundStart: (round) => {
-    console.log(`Round ${round} iniziato - Implementa la tua logica!`);
+  onGuess: async (guess, isCorrect, coordinates = null) => {
+    console.log(`Tentativo: ${guess}, Corretto: ${isCorrect}`);
+    
+    // 💾 Salva tentativo nel tuo backend
+    try {
+      await fetch('/api/my-game/guess', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          guess,
+          isCorrect,
+          coordinates,
+          timestamp: new Date().toISOString(),
+          playerId: localStorage.getItem('player_id'),
+          round: getCurrentRound() // Implementa questa funzione
+        })
+      });
+    } catch (error) {
+      console.error("Errore salvataggio tentativo:", error);
+    }
   },
   
-  onGuess: (guess, isCorrect) => {
-    console.log(`Tentativo: ${guess} - Implementa il tuo salvataggio!`);
-  },
-  
-  onGameComplete: (results) => {
-    console.log("Gioco completato - Salva i tuoi risultati!", results);
+  onGameComplete: async (results) => {
+    console.log("Gioco completato!", results);
+    
+    // 🏆 Salva risultati finali nel tuo backend
+    try {
+      const response = await fetch('/api/my-game/complete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          results,
+          totalScore: results.reduce((sum, r) => sum + r.points, 0),
+          completedAt: new Date().toISOString(),
+          playerId: localStorage.getItem('player_id')
+        })
+      });
+      
+      const data = await response.json();
+      
+      // 📈 Mostra leaderboard o statistiche
+      if (data.rank) {
+        alert(`Posizione in classifica: ${data.rank}`);
+      }
+      
+    } catch (error) {
+      console.error("Errore salvataggio risultati:", error);
+    }
   },
   
   // ========== IL TUO PUNTEGGIO ==========
